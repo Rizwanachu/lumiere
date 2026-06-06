@@ -176,7 +176,7 @@ export default function HomePage() {
       {/* Collections Grid with parallax images */}
       <section className="py-12 px-4 md:px-8">
         <SectionReveal>
-          <div className="mb-8 md:mb-10">
+          <div className="md:mb-10 text-center mb-[35px]">
             <p className="text-[10px] uppercase tracking-[0.3em] text-[#C9A96E] mb-3">Shop by Category</p>
             <div className="flex flex-col md:flex-row gap-4 justify-between items-start">
               <h2 className="font-serif text-3xl md:text-4xl">Explore the Collection</h2>
