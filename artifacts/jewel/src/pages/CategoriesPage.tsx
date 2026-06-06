@@ -60,9 +60,10 @@ export default function CategoriesPage() {
                 transition={{ duration: 0.55, delay: i * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
               >
                 <Link href={href} className="group block relative rounded-2xl overflow-hidden" style={{ height: 'clamp(260px, 35vw, 420px)' }}>
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-                    style={{ backgroundImage: `url(${image})` }}
+                  <img
+                    src={image}
+                    alt={label}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10 transition-all duration-500 group-hover:from-black/90" />
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/8 to-transparent pointer-events-none" />
