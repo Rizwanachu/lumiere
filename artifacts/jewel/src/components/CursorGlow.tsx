@@ -1,48 +1,39 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export function CursorGlow() {
-  const [isVisible, setIsVisible] = useState(false);
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
+  const [mounted, setMounted] = useState(false);
+  const cursorX = useMotionValue(-300);
+  const cursorY = useMotionValue(-300);
 
-  const springConfig = { damping: 25, stiffness: 200, mass: 0.5 };
-  const x = useSpring(cursorX, springConfig);
-  const y = useSpring(cursorY, springConfig);
+  const x = useSpring(cursorX, { damping: 28, stiffness: 180, mass: 0.6 });
+  const y = useSpring(cursorY, { damping: 28, stiffness: 180, mass: 0.6 });
 
   useEffect(() => {
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (isMobile) return;
 
-    const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
-      setIsVisible(true);
+    const move = (e: MouseEvent) => {
+      cursorX.set(e.clientX - 120);
+      cursorY.set(e.clientY - 120);
+      setMounted(true);
     };
-    const hideCursor = () => setIsVisible(false);
 
-    window.addEventListener('mousemove', moveCursor);
-    window.addEventListener('mouseleave', hideCursor);
-    return () => {
-      window.removeEventListener('mousemove', moveCursor);
-      window.removeEventListener('mouseleave', hideCursor);
-    };
+    window.addEventListener('mousemove', move);
+    return () => window.removeEventListener('mousemove', move);
   }, []);
 
-  if (!isVisible) return null;
+  if (!mounted) return null;
 
   return (
     <motion.div
-      style={{ x: x, y: y, translateX: '-50%', translateY: '-50%' }}
-      className="fixed pointer-events-none z-[9999] hidden md:block"
-    >
-      <div
-        className="w-48 h-48 rounded-full opacity-[0.06]"
-        style={{
-          background: 'radial-gradient(circle, #C9A96E 0%, transparent 70%)',
-          filter: 'blur(20px)',
-        }}
-      />
-    </motion.div>
+      className="fixed top-0 left-0 w-60 h-60 rounded-full pointer-events-none z-[9999] hidden md:block"
+      style={{
+        x,
+        y,
+        background: 'radial-gradient(circle, rgba(201,169,110,0.28) 0%, rgba(201,169,110,0.10) 35%, transparent 70%)',
+        filter: 'blur(8px)',
+      }}
+    />
   );
 }
