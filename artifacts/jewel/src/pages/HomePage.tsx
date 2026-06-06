@@ -176,6 +176,15 @@ export default function HomePage() {
       {/* Collections Grid with parallax images */}
       <section className="py-12 px-4 md:px-8">
         <SectionReveal>
+          <div className="mb-8 md:mb-10">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#C9A96E] mb-3">Shop by Category</p>
+            <div className="flex flex-col md:flex-row justify-between items-end gap-4">
+              <h2 className="font-serif text-3xl md:text-4xl">Explore the Collection</h2>
+              <Link href="/shop" className="group flex items-center text-[11px] uppercase tracking-[0.15em] font-medium hover:opacity-70 transition-opacity">
+                View All <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
           <div className="grid grid-cols-3 gap-2 md:gap-4 mb-2 md:mb-4" style={{ height: 'clamp(200px, 40vw, 620px)' }}>
             {collections.map(({ label, href, image }, i) => (
               <CollectionTile key={label} label={label} href={href} image={image} index={i} />
