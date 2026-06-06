@@ -227,4 +227,22 @@ export const products: Product[] = [
     inStock: true,
     lowStock: true,
   },
+  {
+    id: "13",
+    slug: "diamond-tennis-bracelet",
+    name: "Diamond Tennis Bracelet",
+    price: 890,
+    category: "bracelets",
+    metal: "18k Gold",
+    stone: "Diamond",
+    images: [
+      "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=600&q=80",
+      u("photo-1602173574767-37ac01994b2a"),
+      u("photo-1588444837495-c6cfeb53f32d"),
+    ],
+    description: "A classic diamond tennis bracelet set in 18k gold. Each stone hand-selected for brilliance.",
+    materials: "18k yellow gold, 2.0tcw round brilliant diamonds (VS2, G color).",
+    inStock: true,
+    isBestseller: true,
+  },
 ];

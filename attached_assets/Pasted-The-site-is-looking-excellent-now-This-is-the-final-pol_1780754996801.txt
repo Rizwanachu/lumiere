@@ -1,0 +1,97 @@
+The site is looking excellent now. This is the final polish pass — fix remaining layout issues and complete all inner pages to production quality.
+
+1. HOMEPAGE — REMAINING FIXES
+
+Product grid: show exactly 4 products in "Curated for You"
+  - Layout: 4 equal columns on desktop, 2 on tablet, 1 on mobile
+  - Add a 4th product card: "Diamond Tennis Bracelet" — $890
+  - Image: https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=600&q=80
+  - Make sure all 4 cards are same height, images are same aspect ratio (4:5 portrait)
+
+Collection tiles — fix image-category mismatch:
+  Rings tile image:     https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80
+  Necklaces tile image: https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80
+  Earrings tile image:  https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80
+  - Each tile: image fills full tile, dark gradient overlay at bottom, text + "SHOP NOW" over it
+  - On hover: image scale 1.04, overlay darkens slightly
+
+Add a 4th collection tile: Bracelets
+  - Make it a full-width banner below the 3 tiles
+  - Image: https://images.unsplash.com/photo-1573408301185-9519f94652b1?w=1200&q=80
+  - Text: "Bracelets" left-aligned, white, with "Shop Now →" link
+
+2. INNER PAGES — COMPLETE THESE NOW
+
+
+Shop Page (/shop or /collections):
+  - Left sidebar filters (desktop): Category checkboxes, Price slider ($0–$5000), Metal type radio buttons
+  - Top bar: "24 Products" count + Sort dropdown (Featured / Price ↑ / Price ↓ / Newest)
+  - Product grid: 3 columns desktop, 2 tablet, 1 mobile — show all 12 products
+  - Add 12 total products across: 3 rings, 3 necklaces, 3 earrings, 2 bracelets, 1 bracelet
+  - Each product: image, category label (tiny uppercase), name, price — consistent card sizing
+  - Filters actually filter the displayed products (client-side JS)
+  - Mobile: "Filter & Sort" sticky button at top → opens bottom sheet
+
+Product Detail Page (/product/[slug]):
+  Left side (60% width):
+    - Main image: large, square or 4:5, with smooth crossfade on change
+    - Thumbnail row: 3–4 small square thumbnails below, selected has thin gold border
+    - Zoom: on hover over main image, cursor becomes zoom icon, show magnified view in corner
+
+  Right side (40% width, sticky):
+    - Category breadcrumb: Home > Rings
+    - Product name: large serif, 2.2rem
+    - Price: gold color (#C9A96E), or strike-through if on sale
+    - Star rating: 4.8 ★★★★★ (47 reviews) — small, muted
+    - Divider line
+    - Metal selector: "Yellow Gold" "White Gold" "Rose Gold" — pill buttons, selected = dark filled
+    - Size selector: sizes 5 6 7 8 9 10 — square boxes, selected = dark filled, hover = border
+    - "Size Guide" link: opens a small modal with size chart
+    - Quantity: − 1 + stepper, clean minimal
+    - "ADD TO CART" button: full width, #1A1A1A background, white text, hover lightens to #333
+    - "♡ Add to Wishlist" text link below button
+    - Free shipping badge: small icon + "Free shipping on orders over $150"
+    - Accordion sections below:
+        "Product Details" — description text
+        "Materials & Care" — material info
+        "Shipping & Returns" — policy text
+      Each accordion: smooth height transition, + flips to − when open
+
+  Mobile layout:
+    - Image full width at top
+    - Info panel below (not sticky on mobile — scroll naturally)
+    - Sticky bottom bar fixed at bottom: price on left, "Add to Cart" button on right
+
+Cart Drawer:
+  - Opens from RIGHT on bag icon click, covers full height
+  - Width: 420px desktop, 100vw mobile
+  - Smooth slide: translateX(100%) → translateX(0), 350ms cubic-bezier(0.25, 0.46, 0.45, 0.94)
+  - Dark backdrop: rgba(0,0,0,0.45), clicks to close
+  - Header: "Your Cart (2)" with × close button
+  - Each item: thumbnail (80×80), name, variant (Gold, Size 7), price, quantity −/+, × remove
+  - Subtotal line
+  - Free shipping progress bar: "You're $X away from free shipping" — fills gold as cart grows
+  - "CHECKOUT" button: full width, dark, at bottom
+  - "Continue Shopping" text link
+  - When cart is empty: centered message "Your cart is empty" + link to shop
+  - Item count badge on bag icon: gold circle, white number
+
+Wishlist Page (/wishlist):
+  - Same grid as shop page
+  - Heart icon filled gold on all saved items
+  - "Move to Cart" button on each card
+  - Empty state: "Your wishlist is empty" with Shop Now CTA
+
+3. NAVIGATION — COMPLETE
+
+  Desktop navbar:
+  - Transparent with white text on hero
+  - On scroll 80px: white background, dark text, bottom border 1px #E8E4DF, subtle shadow
+  - Transition: 300ms ease all
+  - Links hover: thin gold (#C9A96E) underline slides in from left
+  - Search icon → expands full-width search bar below nav with input + results dropdown
+  - Bag icon → opens cart drawer
+  - Heart icon → links to /wishlist with count badge
+
+  Mobile navbar (< 768px):
+  - Hamburger icon right side...

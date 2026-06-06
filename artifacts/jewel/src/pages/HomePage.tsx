@@ -6,10 +6,8 @@ import { Marquee } from '@/components/Marquee';
 import { SectionReveal } from '@/components/SectionReveal';
 import { ProductCard } from '@/components/ProductCard';
 import { products } from '@/data/products';
-import { proxyImg } from '@/lib/imgProxy';
 
 export default function HomePage() {
-  // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -18,35 +16,50 @@ export default function HomePage() {
 
   const headline = "Fine Jewelry, Reimagined.";
 
+  const collections = [
+    {
+      label: 'Rings',
+      href: '/shop?category=rings',
+      image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80',
+    },
+    {
+      label: 'Necklaces',
+      href: '/shop?category=necklaces',
+      image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80',
+    },
+    {
+      label: 'Earrings',
+      href: '/shop?category=earrings',
+      image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80',
+    },
+  ];
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative h-screen min-h-[600px] w-full bg-black overflow-hidden flex items-center justify-center">
-        <img 
-          src={proxyImg("https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=2000&q=80")}
-          alt="Fine jewelry on model" 
+        <img
+          src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=2000&q=80"
+          alt="Fine jewelry on model"
           className="absolute inset-0 w-full h-full object-cover opacity-60"
         />
-        
+
         <div className="relative z-10 container mx-auto px-4 text-center text-white flex flex-col items-center">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={{
               hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: { staggerChildren: 0.1 }
-              }
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
             }}
             className="flex flex-wrap justify-center overflow-hidden mb-6"
           >
-            {headline.split(" ").map((word, i) => (
+            {headline.split(' ').map((word, i) => (
               <motion.span
                 key={i}
                 variants={{
                   hidden: { opacity: 0, y: 30 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] } }
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] } },
                 }}
                 className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-wide mx-[0.2em]"
               >
@@ -54,8 +67,8 @@ export default function HomePage() {
               </motion.span>
             ))}
           </motion.div>
-          
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
@@ -63,7 +76,7 @@ export default function HomePage() {
           >
             Heirloom-quality pieces crafted with intention. Designed to be lived in, loved, and passed down.
           </motion.p>
-          
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -92,8 +105,8 @@ export default function HomePage() {
               Shop All <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
-          
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -101,48 +114,44 @@ export default function HomePage() {
         </SectionReveal>
       </section>
 
-      {/* Categories */}
+      {/* Collections Grid */}
       <section className="py-12 px-4 md:px-8">
         <SectionReveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 h-[1200px] md:h-[600px]">
-            <Link href="/shop?category=rings" className="group relative w-full h-full overflow-hidden block cursor-pointer">
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500 z-10" />
-              <img 
-                src={proxyImg("https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=800&q=80")}
-                alt="Rings" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute bottom-8 left-8 z-20 text-white">
-                <h3 className="font-serif text-3xl mb-2">Rings</h3>
-                <span className="text-[11px] uppercase tracking-[0.15em] border-b border-white pb-1">Shop Now</span>
-              </div>
-            </Link>
-            <Link href="/shop?category=necklaces" className="group relative w-full h-full overflow-hidden block cursor-pointer">
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500 z-10" />
-              <img 
-                src={proxyImg("https://images.unsplash.com/photo-1589128777073-263566ae5e4d?auto=format&fit=crop&w=800&q=80")}
-                alt="Necklaces" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute bottom-8 left-8 z-20 text-white">
-                <h3 className="font-serif text-3xl mb-2">Necklaces</h3>
-                <span className="text-[11px] uppercase tracking-[0.15em] border-b border-white pb-1">Shop Now</span>
-              </div>
-            </Link>
-            <Link href="/shop?category=earrings" className="group relative w-full h-full overflow-hidden block cursor-pointer">
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500 z-10" />
-              <img 
-                src={proxyImg("https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80")}
-
-                alt="Earrings" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute bottom-8 left-8 z-20 text-white">
-                <h3 className="font-serif text-3xl mb-2">Earrings</h3>
-                <span className="text-[11px] uppercase tracking-[0.15em] border-b border-white pb-1">Shop Now</span>
-              </div>
-            </Link>
+          {/* 3-tile row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4" style={{ height: 'clamp(400px, 55vw, 620px)' }}>
+            {collections.map(({ label, href, image }) => (
+              <Link key={label} href={href} className="group relative overflow-hidden block cursor-pointer">
+                <img
+                  src={image}
+                  alt={label}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent transition-opacity duration-500 group-hover:from-black/80" />
+                <div className="absolute bottom-8 left-8 z-10 text-white">
+                  <h3 className="font-serif text-3xl mb-3">{label}</h3>
+                  <span className="text-[11px] uppercase tracking-[0.15em] border-b border-white pb-1 inline-block">Shop Now</span>
+                </div>
+              </Link>
+            ))}
           </div>
+
+          {/* Bracelets full-width banner */}
+          <Link href="/shop?category=bracelets" className="group relative overflow-hidden block cursor-pointer" style={{ height: '240px' }}>
+            <img
+              src="https://images.unsplash.com/photo-1573408301185-9519f94652b1?w=1200&q=80"
+              alt="Bracelets"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent transition-opacity duration-500 group-hover:from-black/70" />
+            <div className="absolute inset-0 flex items-center">
+              <div className="pl-12 text-white">
+                <h3 className="font-serif text-4xl md:text-5xl mb-4">Bracelets</h3>
+                <span className="text-[11px] uppercase tracking-[0.15em] flex items-center gap-2 group-hover:gap-3 transition-all duration-300">
+                  Shop Now <ArrowRight size={14} />
+                </span>
+              </div>
+            </div>
+          </Link>
         </SectionReveal>
       </section>
 
@@ -153,10 +162,9 @@ export default function HomePage() {
             <div className="w-full md:w-1/2">
               <SectionReveal>
                 <div className="aspect-[4/5] overflow-hidden">
-                  <img 
-                    src={proxyImg("https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1000&q=80")}
-
-                    alt="Atelier detail" 
+                  <img
+                    src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1000&q=80"
+                    alt="Atelier detail"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -166,8 +174,8 @@ export default function HomePage() {
               <SectionReveal>
                 <h2 className="font-serif text-4xl lg:text-5xl mb-6">Crafted with Intention</h2>
                 <p className="text-muted-foreground leading-relaxed mb-8 max-w-md">
-                  We believe fine jewelry should be accessible, enduring, and responsibly made. 
-                  By working directly with master jewelers, we bypass traditional markups to 
+                  We believe fine jewelry should be accessible, enduring, and responsibly made.
+                  By working directly with master jewelers, we bypass traditional markups to
                   bring you heirloom-quality pieces for everyday wear.
                 </p>
                 <Link href="/about">
@@ -190,16 +198,16 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
-              "photo-1602173574767-37ac01994b2a",
-              "photo-1589128777073-263566ae5e4d",
-              "photo-1611085583191-a3b181a88401",
-              "photo-1610694955371-d4a3e0ce4b52",
-              "photo-1584302179602-e4c3d3fd629d",
-              "photo-1588444837495-c6cfeb53f32d",
+              'photo-1602173574767-37ac01994b2a',
+              'photo-1589128777073-263566ae5e4d',
+              'photo-1611085583191-a3b181a88401',
+              'photo-1610694955371-d4a3e0ce4b52',
+              'photo-1584302179602-e4c3d3fd629d',
+              'photo-1588444837495-c6cfeb53f32d',
             ].map((id, i) => (
               <a key={i} href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="group block aspect-square relative overflow-hidden bg-secondary">
-                <img 
-                  src={proxyImg(`https://images.unsplash.com/${id}?auto=format&fit=crop&w=400&q=80`)}
+                <img
+                  src={`https://images.unsplash.com/${id}?auto=format&fit=crop&w=400&q=80`}
                   alt={`Instagram photo ${i + 1}`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
