@@ -110,7 +110,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="max-w-xl text-sm md:text-base font-light tracking-wide opacity-90 mb-[55px]"
+            className="max-w-xl text-sm md:text-base font-light tracking-wide opacity-90 mb-[75px]"
           >
             Heirloom-quality pieces crafted with intention. Designed to be lived in, loved, and passed down.
           </motion.p>
