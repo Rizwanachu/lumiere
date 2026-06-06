@@ -98,7 +98,7 @@ export default function HomePage() {
                   hidden: { opacity: 0, y: 50, rotateX: -40 },
                   visible: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0.9, ease: [0.2, 0.65, 0.3, 0.9] } },
                 }}
-                className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-wide mx-[0.2em] mt-[0px] mb-[0px] pt-[10px] pb-[10px]"
+                className="font-serif sm:text-5xl md:text-7xl lg:text-8xl tracking-wide mx-[0.2em] mt-[0px] mb-[0px] pt-[10px] pb-[10px] text-[42px]"
                 style={{ display: 'inline-block' }}
               >
                 {word}
