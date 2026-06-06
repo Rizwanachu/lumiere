@@ -110,7 +110,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="max-w-xl text-sm md:text-base font-light tracking-wide opacity-90 mb-10"
+            className="max-w-xl text-sm md:text-base font-light tracking-wide opacity-90 mb-[55px]"
           >
             Heirloom-quality pieces crafted with intention. Designed to be lived in, loved, and passed down.
           </motion.p>
@@ -137,7 +137,7 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 1 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2 justify-start items-center flex-col pb-[10px]"
           >
             <span className="text-[9px] uppercase tracking-[0.3em] text-white/60">Scroll</span>
             <motion.div
