@@ -23,7 +23,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative h-screen min-h-[600px] w-full bg-black overflow-hidden flex items-center justify-center">
         <img 
-          src={proxyImg("https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=2000&q=80")}
+          src={proxyImg("https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=2000&q=80")}
           alt="Fine jewelry on model" 
           className="absolute inset-0 w-full h-full object-cover opacity-60"
         />
