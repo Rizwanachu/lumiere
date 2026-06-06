@@ -13,6 +13,7 @@ import WishlistPage from "@/pages/WishlistPage";
 import AboutPage from "@/pages/AboutPage";
 import ContactPage from "@/pages/ContactPage";
 import SearchPage from "@/pages/SearchPage";
+import CategoriesPage from "@/pages/CategoriesPage";
 import NotFound from "@/pages/not-found";
 
 // Components
@@ -51,6 +52,7 @@ function AnimatedRoutes() {
           <Route path="/about" component={AboutPage} />
           <Route path="/contact" component={ContactPage} />
           <Route path="/search" component={SearchPage} />
+          <Route path="/categories" component={CategoriesPage} />
           <Route component={NotFound} />
         </Switch>
       </motion.div>
