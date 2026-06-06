@@ -148,7 +148,7 @@ export default function ShopPage() {
               <button 
                 key={cat}
                 onClick={() => toggleFilter('category', cat)}
-                className="flex items-center gap-1 px-3 py-1.5 bg-secondary text-xs capitalize hover:bg-muted transition-colors"
+                className="flex items-center gap-1 px-3 py-1.5 bg-secondary text-xs capitalize hover:bg-muted transition-colors rounded-full"
               >
                 {cat} <X size={12} />
               </button>
@@ -157,7 +157,7 @@ export default function ShopPage() {
               <button 
                 key={metal}
                 onClick={() => toggleFilter('metal', metal)}
-                className="flex items-center gap-1 px-3 py-1.5 bg-secondary text-xs hover:bg-muted transition-colors"
+                className="flex items-center gap-1 px-3 py-1.5 bg-secondary text-xs hover:bg-muted transition-colors rounded-full"
               >
                 {metal} <X size={12} />
               </button>

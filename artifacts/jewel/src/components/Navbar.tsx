@@ -174,7 +174,7 @@ export function Navbar() {
                 </div>
 
                 {searchResults.length > 0 && (
-                  <div className="absolute left-0 right-0 top-full bg-background border border-border shadow-lg z-50 mx-4 md:mx-8">
+                  <div className="absolute left-0 right-0 top-full bg-background border border-border shadow-lg z-50 mx-4 md:mx-8 rounded-xl overflow-hidden mt-1">
                     {searchResults.map(p => (
                       <Link
                         key={p.id}

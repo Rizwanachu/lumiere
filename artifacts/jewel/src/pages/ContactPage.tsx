@@ -20,7 +20,7 @@ export default function ContactPage() {
     }, 1500);
   };
 
-  const inputClasses = "w-full border border-border bg-transparent px-4 py-3 text-sm outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground";
+  const inputClasses = "w-full border border-border bg-transparent px-4 py-3 text-sm outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground rounded-xl";
 
   return (
     <div className="min-h-screen pt-32 pb-24">
@@ -59,7 +59,7 @@ export default function ContactPage() {
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="bg-foreground text-background uppercase tracking-[0.12em] text-[11px] px-8 py-4 font-medium hover:opacity-90 transition-opacity w-full sm:w-auto mt-4 disabled:opacity-50"
+                  className="bg-foreground text-background uppercase tracking-[0.12em] text-[11px] px-8 py-4 font-medium hover:opacity-90 transition-opacity w-full sm:w-auto mt-4 disabled:opacity-50 rounded-xl"
                 >
                   {isSubmitting ? 'Sending...' : 'Submit Message'}
                 </button>
@@ -91,7 +91,7 @@ export default function ContactPage() {
                   </p>
                   
                   {/* Fake Map */}
-                  <div className="w-full h-48 bg-secondary border border-border flex items-center justify-center relative overflow-hidden group">
+                  <div className="w-full h-48 bg-secondary border border-border rounded-xl flex items-center justify-center relative overflow-hidden group">
                     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80')] opacity-30 object-cover grayscale mix-blend-multiply" />
                     <span className="text-[10px] uppercase tracking-widest font-medium z-10 border-b border-foreground pb-1 group-hover:opacity-70 transition-opacity cursor-pointer">
                       View on Maps

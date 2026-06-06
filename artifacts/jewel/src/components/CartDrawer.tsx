@@ -95,7 +95,7 @@ export function CartDrawer() {
                       </div>
 
                       <div className="flex items-center justify-between mt-4">
-                        <div className="flex items-center border border-border">
+                        <div className="flex items-center border border-border rounded-lg overflow-hidden">
                           <button 
                             className="p-2 hover:bg-secondary transition-colors"
                             onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.size)}

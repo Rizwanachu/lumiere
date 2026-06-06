@@ -60,12 +60,12 @@ export default function AboutPage() {
                 <img 
                   src={proxyImg("https://images.unsplash.com/photo-1602173574767-37ac01994b2a?auto=format&fit=crop&w=600&q=80")}
                   alt="Detail" 
-                  className="w-full aspect-[4/5] object-cover"
+                  className="w-full aspect-[4/5] object-cover rounded-2xl"
                 />
                 <img 
                   src={proxyImg("https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=600&q=80")}
                   alt="Detail" 
-                  className="w-full aspect-[4/5] object-cover mt-8"
+                  className="w-full aspect-[4/5] object-cover mt-8 rounded-2xl"
                 />
               </div>
             </SectionReveal>

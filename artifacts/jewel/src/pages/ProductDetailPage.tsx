@@ -109,7 +109,7 @@ export default function ProductDetailPage() {
           <div className="w-full lg:w-3/5 flex flex-col gap-4">
             <div
               ref={imgRef}
-              className="aspect-[4/5] bg-secondary relative overflow-hidden cursor-zoom-in"
+              className="aspect-[4/5] bg-secondary relative overflow-hidden cursor-zoom-in rounded-2xl"
               onMouseMove={handleMouseMove}
               onMouseLeave={() => setZoom({ active: false, x: 0, y: 0 })}
             >
@@ -134,7 +134,7 @@ export default function ProductDetailPage() {
                 <button
                   key={i}
                   onClick={() => setSelectedImage(i)}
-                  className={`w-20 h-20 flex-shrink-0 overflow-hidden transition-all border-2 ${selectedImage === i ? 'border-[#C9A96E]' : 'border-transparent hover:border-border'}`}
+                  className={`w-20 h-20 flex-shrink-0 overflow-hidden transition-all border-2 rounded-xl ${selectedImage === i ? 'border-[#C9A96E]' : 'border-transparent hover:border-border'}`}
                 >
                   <img src={img} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-cover" />
                 </button>
@@ -206,7 +206,7 @@ export default function ProductDetailPage() {
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
-                        className={`py-3 text-sm border transition-all duration-200 ${
+                        className={`py-3 text-sm border transition-all duration-200 rounded-xl ${
                           selectedSize === size
                             ? 'border-foreground bg-foreground text-background'
                             : 'border-border hover:border-foreground'
@@ -222,7 +222,7 @@ export default function ProductDetailPage() {
               {/* Quantity */}
               <div className="mb-6">
                 <h3 className="text-[11px] uppercase tracking-[0.15em] font-medium mb-3">Quantity</h3>
-                <div className="flex items-center border border-border w-32 h-11">
+                <div className="flex items-center border border-border w-32 h-11 rounded-xl overflow-hidden">
                   <button
                     className="px-3 h-full hover:bg-secondary transition-colors disabled:opacity-40"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
