@@ -152,7 +152,7 @@ export default function HomePage() {
       {/* Featured Products with stagger */}
       <section className="py-24 px-4 md:px-8 container mx-auto">
         <SectionReveal>
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+          <div className="flex md:flex-row text-center justify-center items-center gap-[10px] flex-col mb-[48px] font-normal">
             <div>
               <h2 className="font-serif text-3xl md:text-4xl mb-2">Curated for You</h2>
               <p className="text-muted-foreground text-sm">Our most loved everyday essentials.</p>
