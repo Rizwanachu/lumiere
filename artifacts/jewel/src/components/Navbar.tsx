@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, useLocation, useSearch } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ShoppingBag, Heart, Menu, X, ArrowRight, ChevronDown } from 'lucide-react';
 import { useCart } from '@/store/useCart';
@@ -40,6 +40,7 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [location, navigate] = useLocation();
+  const search = useSearch();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const shopTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -63,7 +64,7 @@ export function Navbar() {
     setIsSearchOpen(false);
     setSearchQuery('');
     setIsShopOpen(false);
-  }, [location]);
+  }, [location, search]);
 
   useEffect(() => {
     if (isSearchOpen) setTimeout(() => searchInputRef.current?.focus(), 50);
@@ -308,19 +309,64 @@ export function Navbar() {
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto px-6 pt-8">
+              {/* Mobile search */}
+              <div className="px-6 py-4 border-b border-border">
+                <div className="flex items-center gap-3 bg-secondary rounded-xl px-4 py-3">
+                  <Search size={16} strokeWidth={1.5} className="text-muted-foreground flex-shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="Search jewelry..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' && searchQuery.trim()) {
+                        navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+                        setIsMobileMenuOpen(false);
+                      }
+                    }}
+                    className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground"
+                  />
+                </div>
+                {searchQuery.trim().length > 1 && (
+                  <div className="mt-2 rounded-xl overflow-hidden border border-border bg-background">
+                    {products
+                      .filter(p =>
+                        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        p.category.toLowerCase().includes(searchQuery.toLowerCase())
+                      )
+                      .slice(0, 4)
+                      .map(p => (
+                        <Link
+                          key={p.id}
+                          href={`/product/${p.slug}`}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-secondary transition-colors border-b border-border last:border-0"
+                        >
+                          <img src={p.images[0]} alt={p.name} className="w-9 h-9 object-cover rounded-lg flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{p.name}</p>
+                            <p className="text-xs text-muted-foreground capitalize">{p.category}</p>
+                          </div>
+                        </Link>
+                      ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-6 pt-6">
                 {mobileLinks.map((link, i) => (
                   <motion.div
                     key={link.href}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.06, duration: 0.3 }}
+                    transition={{ delay: i * 0.05, duration: 0.25 }}
                   >
                     <Link
                       href={link.href}
-                      className="block font-serif text-2xl py-4 border-b border-border/50 hover:text-muted-foreground transition-colors"
+                      className="flex items-center justify-between font-serif text-xl py-3.5 border-b border-border/40 hover:text-[#C9A96E] transition-colors group"
                     >
                       {link.label}
+                      <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity text-[#C9A96E]" />
                     </Link>
                   </motion.div>
                 ))}

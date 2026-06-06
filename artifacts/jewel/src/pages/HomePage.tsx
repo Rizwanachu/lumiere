@@ -98,7 +98,7 @@ export default function HomePage() {
                   hidden: { opacity: 0, y: 50, rotateX: -40 },
                   visible: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0.9, ease: [0.2, 0.65, 0.3, 0.9] } },
                 }}
-                className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-wide mx-[0.2em]"
+                className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-wide mx-[0.2em]"
                 style={{ display: 'inline-block' }}
               >
                 {word}
@@ -166,7 +166,7 @@ export default function HomePage() {
         </SectionReveal>
 
         <StaggerReveal
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8"
           staggerDelay={0.12}
           direction="up"
         >
@@ -179,13 +179,13 @@ export default function HomePage() {
       {/* Collections Grid with parallax images */}
       <section className="py-12 px-4 md:px-8">
         <SectionReveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4" style={{ height: 'clamp(400px, 55vw, 620px)' }}>
+          <div className="grid grid-cols-3 gap-2 md:gap-4 mb-2 md:mb-4" style={{ height: 'clamp(200px, 40vw, 620px)' }}>
             {collections.map(({ label, href, image }, i) => (
               <CollectionTile key={label} label={label} href={href} image={image} index={i} />
             ))}
           </div>
 
-          <Link href="/shop?category=bracelets" className="block rounded-2xl overflow-hidden cursor-pointer" style={{ height: '240px' }}>
+          <Link href="/shop?category=bracelets" className="block rounded-xl md:rounded-2xl overflow-hidden cursor-pointer" style={{ height: 'clamp(120px, 25vw, 240px)' }}>
             <div className="group relative h-full">
               {/* Scalable bg image */}
               <div
@@ -311,9 +311,9 @@ function CollectionTile({ label, href, image }: { label: string; href: string; i
         {/* Shine sweep */}
         <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
         {/* Label */}
-        <div className="absolute bottom-0 left-0 right-0 p-8 z-10 text-white translate-y-1 group-hover:translate-y-0 transition-transform duration-300 ease-out">
-          <h3 className="font-serif text-3xl mb-3">{label}</h3>
-          <span className="text-[11px] uppercase tracking-[0.15em] flex items-center gap-2 opacity-0 group-hover:opacity-100 group-hover:gap-3 transition-all duration-300">
+        <div className="absolute bottom-0 left-0 right-0 p-3 md:p-8 z-10 text-white translate-y-1 group-hover:translate-y-0 transition-transform duration-300 ease-out">
+          <h3 className="font-serif text-base sm:text-2xl md:text-3xl mb-1 md:mb-3">{label}</h3>
+          <span className="hidden md:flex text-[11px] uppercase tracking-[0.15em] items-center gap-2 opacity-0 group-hover:opacity-100 group-hover:gap-3 transition-all duration-300">
             Shop Now <ArrowRight size={12} />
           </span>
         </div>

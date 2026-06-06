@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'wouter';
+import { useSearch } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, X, ChevronDown } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { ProductCard } from '@/components/ProductCard';
 
 export default function ShopPage() {
-  const [location] = useLocation();
-  const searchParams = new URLSearchParams(window.location.search);
-  const initialCategory = searchParams.get('category');
-
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    initialCategory ? [initialCategory] : []
-  );
+  const search = useSearch();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(() => {
+    const cat = new URLSearchParams(search).get('category');
+    return cat ? [cat] : [];
+  });
   const [selectedMetals, setSelectedMetals] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState<string>('featured');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => {
+    const cat = new URLSearchParams(search).get('category');
+    setSelectedCategories(cat ? [cat] : []);
+    window.scrollTo(0, 0);
+  }, [search]);
 
   const categories = ['rings', 'necklaces', 'earrings', 'bracelets'];
   const metals = ['14k Gold', '18k Gold', 'Sterling Silver', 'Platinum'];
@@ -209,7 +211,7 @@ export default function ShopPage() {
               {filteredProducts.length > 0 ? (
                 <motion.div
                   key={`grid-${selectedCategories.join()}-${selectedMetals.join()}-${sortOption}`}
-                  className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-12"
+                  className="grid grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-8 sm:gap-x-6 sm:gap-y-12"
                   initial="hidden"
                   animate="visible"
                   variants={{
