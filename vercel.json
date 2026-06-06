@@ -1,6 +1,6 @@
 {
-  "buildCommand": "pnpm --filter @workspace/jewel run build",
-  "outputDirectory": "artifacts/jewel/dist",
+  "buildCommand": "pnpm --filter @workspace/jewel run build && rm -rf ./dist && mv ./artifacts/jewel/dist ./dist",
+  "outputDirectory": "dist",
   "installCommand": "pnpm install",
   "framework": null,
   "rewrites": [
