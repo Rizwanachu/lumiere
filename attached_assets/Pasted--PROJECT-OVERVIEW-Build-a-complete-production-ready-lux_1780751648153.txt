@@ -1,0 +1,164 @@
+
+PROJECT OVERVIEW
+Build a complete, production-ready luxury jewellery e-commerce website with modern minimal design, full e-commerce features, smooth animations, and full responsiveness across all devices. The site must be Vercel-deploy-friendly (Next.js or React + Vite).
+
+TECH STACK
+- Framework: Next.js 14 (App Router) or React + Vite (Vercel-ready)
+- Styling: Tailwind CSS with custom config
+- Animations: Framer Motion
+- Icons: Lucide React
+- State: Zustand (cart/wishlist)
+- Images: Next/Image with blur placeholder
+- Fonts: Google Fonts — use an elegant serif (e.g. Playfair Display or Cormorant Garamond) for headings + a clean sans-serif (e.g. DM Sans or Jost) for body
+
+DESIGN SYSTEM
+Color palette (luxury minimal):
+  - Background: #FAFAF8 (warm off-white)
+  - Primary text: #1A1A1A
+  - Accent/Gold: #C9A96E
+  - Secondary text: #6B6B6B
+  - Border: #E8E4DF
+  - Surface: #F2EDE8
+
+Typography:
+  - Headings: serif font, thin/light weight (300–400), generous letter-spacing
+  - Body: sans-serif, 15–16px, line-height 1.7
+  - Labels/Nav: uppercase, 11–12px, wide letter-spacing (0.15em)
+
+Design language:
+  - Extremely clean, whitespace-generous layout
+  - Thin 1px borders, never thick
+  - Subtle gold accents sparingly
+  - No drop shadows — use border + spacing for depth
+  - Hover states: smooth 300ms transitions, underline slides, image scale 1.05
+  - Section reveals: fade-up on scroll using Framer Motion viewport
+
+PAGES TO BUILD
+1. Homepage (/) — Hero + Featured + Collections + Editorial
+  - Full-screen hero: large serif headline, subtext, CTA button, full-bleed jewellery image
+  - Marquee/ticker: scrolling brand values (Free Shipping · Ethically Sourced · Lifetime Warranty)
+  - Featured Products: 4-column grid, product cards with hover zoom + quick-add to cart
+  - Collections: 3 large editorial image tiles (Rings, Necklaces, Earrings) with overlay text
+  - "Our Story" section: split layout image + text
+  - Instagram-style UGC grid (static placeholder images)
+  - Newsletter signup section
+
+2. Shop / Collection Page (/shop)
+  - Sidebar filters: Category, Price range slider, Metal type, Stone, Sort by
+  - Product grid: 3–4 columns desktop, 2 mobile, 1 on very small screens
+  - Filter tags shown above grid, removable
+  - Load more / infinite scroll option
+  - Active filter count badge on mobile filter button
+
+3. Product Detail Page (/product/[slug])
+  - Full-screen image gallery with thumbnail strip + zoom on hover
+  - Sticky product info panel (right side desktop, below on mobile)
+  - Variant selectors: metal type, ring size with size guide modal
+  - Add to cart + Add to wishlist buttons
+  - Accordion: Description, Materials & Care, Shipping & Returns
+  - Recently Viewed products section
+  - Related Products carousel
+
+4. Cart (/cart)
+  - Slide-over drawer cart (right side, opens on bag icon click)
+  - Cart items with image, name, variant, quantity stepper, remove
+  - Order summary: subtotal, shipping (free over threshold), total
+  - Promo code input
+  - Checkout CTA button
+  - "You may also like" upsell section
+
+5. Checkout (/checkout)
+  - Multi-step: Contact → Shipping → Payment → Review
+  - Progress indicator at top
+  - Address form with validation
+  - Payment UI (static Stripe-like card input UI)
+  - Order summary sidebar sticky
+
+6. Wishlist (/wishlist)
+  - Saved items grid
+  - Move to cart from wishlist
+  - Share wishlist link button
+
+7. About (/about)
+  - Brand story, editorial images, artisan craftsmanship section
+  - Team/founder section
+  - Values with icons
+
+8. Contact (/contact)
+  - Clean form: Name, Email, Subject, Message
+  - Store address, email, phone
+  - Embedded map placeholder
+
+9. Search (/search)
+  - Full-page search with live results
+  - Recent searches
+  - No results state with suggestions
+
+GLOBAL COMPONENTS
+- Navbar: Logo center or left, nav links, search icon, wishlist icon with count, bag icon with count. Transparent on hero, white + border on scroll. Mobile: hamburger → full-screen slide-in menu
+- Footer: 4-column grid — brand description, shop links, customer care, newsletter. Bottom bar: © + payment icons
+- Product Card: image with hover zoom, quick-add on hover overlay, wishlist heart toggle, name + price, sold-out badge
+- Toast notifications: "Added to cart", "Added to wishlist" — bottom right, auto-dismiss
+- Loading skeleton: for product grids while loading
+- Breadcrumbs: on inner pages
+
+ANIMATIONS & INTERACTIONS
+- Page transitions: fade in 400ms
+- Hero text: staggered word-by-word reveal on load
+- Section entry: fade-up with stagger (Framer Motion whileInView)
+- Product card hover: image scale 1.05, quick-add button slides up from bottom
+- Nav: background transition on scroll, mobile menu slide-in
+- Cart drawer: slide from right (translateX)
+- Image gallery: crossfade between images
+- Filter sidebar: smooth height collapse/expand
+- Accordion: smooth height animation
+- All buttons: scale(0.97) on click, smooth color transitions
+
+E-COMMERCE FEATURES
+- Cart: add/remove/update quantity, persisted in localStorage via Zustand
+- Wishlist: toggle, persisted in localStorage
+- Filters: URL-synced query params
+- Product variants: metal, size
+- Price formatting: currency symbol, sale price strikethrough
+- Stock status: in-stock / low stock / sold out
+- Product slugs: SEO-friendly URLs
+- Promo code: basic validation UI
+- Size guide: modal popup
+
+SEO & PERFORMANCE
+- Next.js metadata API for all pages (title, description, OG image)
+- Semantic HTML: h1→h2→h3 hierarchy
+- Alt text on all images
+- next/image for automatic optimization
+- Lazy loading for below-fold content
+- Sitemap.xml and robots.txt
+- Clean, descriptive URLs
+
+MOBILE RESPONSIVENESS
+- Full mobile-first design — test all breakpoints: 375px, 390px, 430px, 768px, 1024px, 1440px
+- Mobile nav: hamburger → full-screen overlay menu with smooth animation
+- Product grid: 1 col (375px), 2 col (640px+), 3–4 col (1024px+)
+- Touch-friendly: min 44px tap targets, swipeable gallery on mobile
+- Sticky mobile bottom bar: Cart + Wishlist CTA on product page
+- Filter drawer (bottom sheet) on mobile instead of sidebar
+- Font sizes scale correctly, never too small on mobile
+
+VERCEL DEPLOYMENT
+- Use Next.js 14 (App Router) — deploys perfectly to Vercel zero-config
+- Include vercel.json if needed
+- .env.example with placeholder variables
+- No server-only dependencies that break edge runtime
+- Static product data as JSON in /data folder (no database needed for demo)
+- Image domains whitelisted in next.config.js
+
+SAMPLE DATA
+Create realistic placeholder products (at least 12):
+  Categories: Rings, Necklaces, Earrings, Bracelets
+  Fields: id, slug, name, price, salePrice, category, metal, stone, images (3+), description, inStock, isNew, isBestseller
+  Use high-quality placeholder image URLs from Unsplash (jewellery search)
+
+FINAL QUALITY BAR
+The end result should look like a premium brand like Mejuri, Vrai, or Monica Vinader — not a generic template. Every spacing, font size, and color decision should feel intentional. The site should be immediately deployable to Vercel and work flawlessly on all screen sizes.
+
+Start by scaffolding the project structure, then build page by page. Show me the running preview as you go.
+  

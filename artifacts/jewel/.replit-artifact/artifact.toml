@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Lumière Jewels"
+version = "1.0.0"
+id = "artifacts/jewel"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20322
+
+[services.development]
+run = "pnpm --filter @workspace/jewel run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/jewel", "run", "build" ]
+publicDir = "artifacts/jewel/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20322"
+BASE_PATH = "/"
