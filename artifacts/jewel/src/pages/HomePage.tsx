@@ -125,7 +125,7 @@ export default function HomePage() {
                 whileHover={{ scale: 1.04, backgroundColor: '#000', color: '#fff', borderColor: '#fff' }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ duration: 0.2 }}
-                className="bg-white text-black uppercase tracking-[0.15em] text-[11px] px-10 py-4 font-medium border border-transparent"
+                className="bg-white text-black uppercase tracking-[0.15em] text-[11px] px-10 py-4 font-medium border border-transparent rounded-tl-[20px] rounded-tr-[20px] rounded-br-[20px] rounded-bl-[20px]"
               >
                 Explore the Collection
               </motion.button>
