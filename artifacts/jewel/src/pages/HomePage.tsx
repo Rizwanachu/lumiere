@@ -98,7 +98,7 @@ export default function HomePage() {
                   hidden: { opacity: 0, y: 50, rotateX: -40 },
                   visible: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0.9, ease: [0.2, 0.65, 0.3, 0.9] } },
                 }}
-                className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-wide mx-[0.2em]"
+                className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-wide mx-[0.2em] mt-[0px] mb-[0px] pt-[10px] pb-[10px]"
                 style={{ display: 'inline-block' }}
               >
                 {word}
@@ -148,9 +148,7 @@ export default function HomePage() {
           </motion.div>
         </motion.div>
       </section>
-
       <Marquee text="Free Shipping · Ethically Sourced · Lifetime Warranty · Free Returns" />
-
       {/* Featured Products with stagger */}
       <section className="py-24 px-4 md:px-8 container mx-auto">
         <SectionReveal>
@@ -175,7 +173,6 @@ export default function HomePage() {
           ))}
         </StaggerReveal>
       </section>
-
       {/* Collections Grid with parallax images */}
       <section className="py-12 px-4 md:px-8">
         <SectionReveal>
@@ -215,7 +212,6 @@ export default function HomePage() {
           </Link>
         </SectionReveal>
       </section>
-
       {/* Story Split Section */}
       <section className="py-24 bg-card overflow-hidden">
         <div className="container mx-auto px-4 md:px-8">
@@ -255,7 +251,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* UGC Grid */}
       <section className="py-24 container mx-auto px-4 md:px-8">
         <SectionReveal>
