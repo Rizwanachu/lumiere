@@ -12,19 +12,19 @@ interface SectionRevealProps {
 
 const variants = {
   up: {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 32 },
     visible: { opacity: 1, y: 0 },
   },
   left: {
-    hidden: { opacity: 0, x: -40 },
+    hidden: { opacity: 0, x: -32 },
     visible: { opacity: 1, x: 0 },
   },
   right: {
-    hidden: { opacity: 0, x: 40 },
+    hidden: { opacity: 0, x: 32 },
     visible: { opacity: 1, x: 0 },
   },
   scale: {
-    hidden: { opacity: 0, scale: 0.92 },
+    hidden: { opacity: 0, scale: 0.94 },
     visible: { opacity: 1, scale: 1 },
   },
   none: {
@@ -38,14 +38,14 @@ export function SectionReveal({
   className = '',
   delay = 0,
   direction = 'up',
-  duration = 0.8,
+  duration = 0.7,
   once = true,
 }: SectionRevealProps) {
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once, margin: '-80px' }}
+      viewport={{ once, margin: '-40px 0px' }}
       variants={variants[direction]}
       transition={{
         duration,
@@ -79,7 +79,7 @@ export function StaggerReveal({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-60px' }}
+      viewport={{ once: true, margin: '-30px 0px' }}
       variants={{
         hidden: {},
         visible: { transition: { staggerChildren: staggerDelay } },
@@ -89,7 +89,7 @@ export function StaggerReveal({
         <motion.div
           key={i}
           variants={variants[direction]}
-          transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
+          transition={{ duration: 0.65, ease: [0.21, 0.47, 0.32, 0.98] }}
           className={itemClassName}
         >
           {child}

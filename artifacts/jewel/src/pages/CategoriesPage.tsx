@@ -40,7 +40,7 @@ export default function CategoriesPage() {
       <div className="container mx-auto px-4 md:px-8">
 
         <SectionReveal>
-          <div className="mb-12">
+          <div className="mb-10 md:mb-12">
             <p className="text-[10px] uppercase tracking-[0.3em] text-[#C9A96E] mb-3">Browse</p>
             <h1 className="font-serif text-4xl md:text-5xl mb-3">Shop by Category</h1>
             <p className="text-muted-foreground text-sm max-w-md">
@@ -55,33 +55,41 @@ export default function CategoriesPage() {
             return (
               <motion.div
                 key={label}
-                initial={{ opacity: 0, y: 28 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: i * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px 0px' }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.21, 0.47, 0.32, 0.98] }}
               >
-                <Link href={href} className="group block relative rounded-2xl overflow-hidden" style={{ height: 'clamp(260px, 35vw, 420px)' }}>
-                  <img
-                    src={image}
-                    alt={label}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10 transition-all duration-500 group-hover:from-black/90" />
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/8 to-transparent pointer-events-none" />
+                <motion.div whileTap={{ scale: 0.985 }} transition={{ type: 'spring', stiffness: 400, damping: 30 }}>
+                  <Link href={href} className="group block relative rounded-2xl overflow-hidden" style={{ height: 'clamp(240px, 38vw, 420px)' }}>
+                    <img
+                      src={image}
+                      alt={label}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] group-active:scale-[1.03]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/5 transition-all duration-500 group-hover:from-black/90" />
+                    {/* shine sweep — desktop only */}
+                    <div className="hidden sm:block absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/8 to-transparent pointer-events-none" />
 
-                  <div className="absolute bottom-0 left-0 right-0 p-8 text-white flex items-end justify-between">
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.25em] text-white/60 mb-2">{count} pieces</p>
-                      <h2 className="font-serif text-3xl md:text-4xl mb-1 group-hover:text-[#C9A96E] transition-colors duration-300">{label}</h2>
-                      <p className="text-sm text-white/70 font-light">{description}</p>
+                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
+                      <div className="flex items-end justify-between">
+                        <div>
+                          <p className="text-[10px] uppercase tracking-[0.25em] text-white/60 mb-2">{count} pieces</p>
+                          <h2 className="font-serif text-3xl md:text-4xl mb-1 group-hover:text-[#C9A96E] transition-colors duration-300">{label}</h2>
+                          <p className="text-sm text-white/70 font-light">{description}</p>
+                        </div>
+                        <div className="flex-shrink-0 w-10 h-10 rounded-full border border-white/40 flex items-center justify-center ml-4 group-hover:border-[#C9A96E] group-hover:bg-[#C9A96E]/20 group-active:bg-[#C9A96E]/30 transition-all duration-300">
+                          <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform duration-200" />
+                        </div>
+                      </div>
+
+                      {/* Mobile tap hint — hidden on desktop */}
+                      <p className="sm:hidden mt-3 text-[10px] uppercase tracking-[0.2em] text-white/40 flex items-center gap-1">
+                        Tap to explore <ArrowRight size={10} />
+                      </p>
                     </div>
-                    <motion.div
-                      className="flex-shrink-0 w-10 h-10 rounded-full border border-white/40 flex items-center justify-center group-hover:border-[#C9A96E] group-hover:bg-[#C9A96E]/20 transition-all duration-300 ml-4"
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform duration-200" />
-                    </motion.div>
-                  </div>
-                </Link>
+                  </Link>
+                </motion.div>
               </motion.div>
             );
           })}
@@ -90,13 +98,15 @@ export default function CategoriesPage() {
         <SectionReveal>
           <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-muted-foreground text-sm">{products.length} pieces total across all collections</p>
-            <Link
-              href="/shop"
-              className="group flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] font-medium hover:opacity-70 transition-opacity"
-            >
-              Shop Everything
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <motion.div whileTap={{ scale: 0.95 }}>
+              <Link
+                href="/shop"
+                className="group flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] font-medium hover:opacity-70 transition-opacity"
+              >
+                Shop Everything
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
           </div>
         </SectionReveal>
       </div>

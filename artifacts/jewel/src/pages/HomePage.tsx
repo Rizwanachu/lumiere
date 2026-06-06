@@ -191,6 +191,7 @@ export default function HomePage() {
             ))}
           </div>
 
+          <motion.div whileTap={{ scale: 0.98 }} transition={{ type: 'spring', stiffness: 400, damping: 30 }}>
           <Link href="/shop?category=bracelets" className="block rounded-xl md:rounded-2xl overflow-hidden cursor-pointer" style={{ height: 'clamp(120px, 25vw, 240px)' }}>
             <div className="group relative h-full">
               {/* Scalable bg image */}
@@ -219,6 +220,7 @@ export default function HomePage() {
               </div>
             </div>
           </Link>
+          </motion.div>
         </SectionReveal>
       </section>
       {/* Story Split Section */}
@@ -303,25 +305,28 @@ export default function HomePage() {
 
 function CollectionTile({ label, href, image }: { label: string; href: string; image: string; index: number }) {
   return (
-    <Link href={href} className="block h-full rounded-2xl overflow-hidden cursor-pointer">
-      <div className="group relative h-full">
-        {/* Scalable bg image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-[1.07]"
-          style={{ backgroundImage: `url(${image})` }}
-        />
-        {/* Darkening overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent transition-all duration-500 group-hover:from-black/90" />
-        {/* Shine sweep */}
-        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
-        {/* Label */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 md:p-8 z-10 text-white translate-y-1 group-hover:translate-y-0 transition-transform duration-300 ease-out">
-          <h3 className="font-serif text-base sm:text-2xl md:text-3xl mb-1 md:mb-3">{label}</h3>
-          <span className="hidden md:flex text-[11px] uppercase tracking-[0.15em] items-center gap-2 opacity-0 group-hover:opacity-100 group-hover:gap-3 transition-all duration-300">
-            Shop Now <ArrowRight size={12} />
-          </span>
+    <motion.div whileTap={{ scale: 0.97 }} transition={{ type: 'spring', stiffness: 400, damping: 30 }} className="h-full">
+      <Link href={href} className="block h-full rounded-2xl overflow-hidden cursor-pointer">
+        <div className="group relative h-full">
+          {/* Scalable bg image */}
+          <img
+            src={image}
+            alt={label}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07] group-active:scale-[1.04]"
+          />
+          {/* Darkening overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent transition-all duration-500 group-hover:from-black/90" />
+          {/* Shine sweep — desktop only */}
+          <div className="hidden sm:block absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
+          {/* Label */}
+          <div className="absolute bottom-0 left-0 right-0 p-3 md:p-8 z-10 text-white">
+            <h3 className="font-serif text-base sm:text-2xl md:text-3xl mb-1 md:mb-2">{label}</h3>
+            <span className="flex text-[9px] sm:text-[11px] uppercase tracking-[0.15em] items-center gap-1.5 text-white/70 sm:opacity-0 sm:group-hover:opacity-100 sm:gap-2 sm:group-hover:gap-3 transition-all duration-300">
+              Shop <ArrowRight size={10} />
+            </span>
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </motion.div>
   );
 }

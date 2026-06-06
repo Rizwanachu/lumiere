@@ -62,6 +62,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         style={{ rotateX, rotateY, transformPerspective: 1000 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
         className="relative"
       >
         <div className="relative aspect-[4/5] bg-secondary mb-4 overflow-hidden rounded-2xl">
@@ -73,9 +75,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
           />
 
-          {/* Gold glare overlay */}
+          {/* Gold glare overlay — desktop only */}
           <motion.div
-            className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
+            className="absolute inset-0 pointer-events-none hidden sm:block opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
             style={{
               background: `radial-gradient(circle at ${glareX} ${glareY}, rgba(201,169,110,0.18) 0%, transparent 65%)`,
             }}
@@ -97,8 +99,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           {/* Wishlist */}
           <motion.button
             onClick={handleWishlist}
-            whileTap={{ scale: 0.8 }}
-            className="absolute top-3 right-3 p-2 rounded-full hover:bg-background/50 transition-colors z-10"
+            whileTap={{ scale: 0.75 }}
+            className="absolute top-3 right-3 p-2 rounded-full bg-background/30 backdrop-blur-sm hover:bg-background/60 transition-colors z-10"
             data-testid={`button-wishlist-${product.id}`}
           >
             <Heart
@@ -108,22 +110,23 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             />
           </motion.button>
 
-          {/* Quick Add */}
+          {/* Quick Add — always visible on mobile, hover-only on desktop */}
           {product.inStock && (
-            <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out">
-              <button
+            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 translate-y-0 opacity-100 sm:translate-y-full sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 transition-all duration-300 ease-out">
+              <motion.button
                 onClick={handleQuickAdd}
-                className="w-full bg-background text-foreground uppercase text-[11px] tracking-[0.15em] font-medium py-3 hover:bg-foreground hover:text-background transition-colors duration-200"
+                whileTap={{ scale: 0.96, backgroundColor: 'var(--foreground)', color: 'var(--background)' }}
+                className="w-full bg-background text-foreground uppercase text-[10px] tracking-[0.15em] font-medium py-3 hover:bg-foreground hover:text-background transition-colors duration-200 rounded-sm"
                 data-testid={`button-quick-add-${product.id}`}
               >
                 Quick Add
-              </button>
+              </motion.button>
             </div>
           )}
         </div>
 
         <div className="flex flex-col items-center text-center">
-          <h3 className="font-serif text-lg mb-1 group-hover:text-[#C9A96E] transition-colors duration-300">{product.name}</h3>
+          <h3 className="font-serif text-base sm:text-lg mb-1 group-hover:text-[#C9A96E] transition-colors duration-300">{product.name}</h3>
           <div className="flex items-center gap-2 text-sm">
             {product.salePrice ? (
               <>
