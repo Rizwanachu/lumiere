@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'wouter';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Marquee } from '@/components/Marquee';
 import { SectionReveal, StaggerReveal } from '@/components/SectionReveal';
@@ -295,30 +295,26 @@ export default function HomePage() {
   );
 }
 
-function CollectionTile({ label, href, image, index }: { label: string; href: string; image: string; index: number }) {
-  const ref = useRef<HTMLAnchorElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
-
+function CollectionTile({ label, href, image }: { label: string; href: string; image: string; index: number }) {
   return (
-    <Link ref={ref} href={href} className="group relative overflow-hidden block cursor-pointer rounded-2xl">
-      <motion.img
+    <Link href={href} className="group relative overflow-hidden block cursor-pointer rounded-2xl h-full">
+      {/* Image */}
+      <img
         src={image}
         alt={label}
-        style={{ y }}
-        className="absolute inset-0 w-full h-[116%] -top-[8%] object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
       />
 
       {/* Darkening overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent transition-opacity duration-500 group-hover:from-black/90" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent transition-all duration-500 group-hover:from-black/90" />
 
-      {/* Shine sweep on hover */}
+      {/* Shine sweep */}
       <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
 
-      {/* Bottom label — slides up on hover */}
-      <div className="absolute bottom-0 left-0 right-0 p-8 z-10 text-white translate-y-2 group-hover:translate-y-0 transition-transform duration-400 ease-out">
+      {/* Label — nudges up on hover, "Shop Now" fades in */}
+      <div className="absolute bottom-0 left-0 right-0 p-8 z-10 text-white translate-y-1 group-hover:translate-y-0 transition-transform duration-300 ease-out">
         <h3 className="font-serif text-3xl mb-3">{label}</h3>
-        <span className="text-[11px] uppercase tracking-[0.15em] flex items-center gap-2 opacity-0 group-hover:opacity-100 group-hover:gap-3 transition-all duration-300 delay-75">
+        <span className="text-[11px] uppercase tracking-[0.15em] flex items-center gap-2 opacity-0 group-hover:opacity-100 group-hover:gap-3 transition-all duration-300">
           Shop Now <ArrowRight size={12} />
         </span>
       </div>
