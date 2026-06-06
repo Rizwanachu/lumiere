@@ -72,7 +72,7 @@ export function CartDrawer() {
               ) : (
                 items.map((item) => (
                   <div key={`${item.product.id}-${item.size}`} className="flex gap-4">
-                    <Link href={`/product/${item.product.slug}`} onClick={toggleOpen} className="w-24 h-32 flex-shrink-0 bg-secondary">
+                    <Link href={`/product/${item.product.slug}`} onClick={toggleOpen} className="w-24 h-32 flex-shrink-0 bg-secondary rounded-xl overflow-hidden">
                       <img 
                         src={proxyImg(item.product.images[0])} 
                         alt={item.product.name} 

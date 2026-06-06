@@ -38,7 +38,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
   return (
     <Link href={`/product/${product.slug}`} className="group block" data-testid={`card-product-${product.id}`}>
-      <div className="relative aspect-[4/5] bg-secondary mb-4 overflow-hidden">
+      <div className="relative aspect-[4/5] bg-secondary mb-4 overflow-hidden rounded-2xl">
         <img
           src={proxyImg(product.images[0])}
           alt={product.name}

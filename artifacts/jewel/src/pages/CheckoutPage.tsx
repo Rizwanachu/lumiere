@@ -1,39 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, ChevronRight } from 'lucide-react';
+import { Check, ChevronRight, Lock, Package, Truck, CreditCard } from 'lucide-react';
 import { useCart } from '@/store/useCart';
+
+const US_STATES = [
+  'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut',
+  'Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa',
+  'Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan',
+  'Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire',
+  'New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio',
+  'Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota',
+  'Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia',
+  'Wisconsin','Wyoming',
+];
+
+interface FormData {
+  email: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  apartment: string;
+  city: string;
+  state: string;
+  zip: string;
+  cardNumber: string;
+  cardName: string;
+  expiry: string;
+  cvv: string;
+  billingOption: 'same' | 'different';
+  shippingMethod: 'standard' | 'express';
+}
 
 export default function CheckoutPage() {
   const { items, clearCart } = useCart();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [isComplete, setIsComplete] = useState(false);
+  const [orderNumber] = useState(() => `LM-${Math.floor(Math.random() * 90000) + 10000}`);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const subtotal = items.reduce((acc, item) => {
-    const price = item.product.salePrice || item.product.price;
-    return acc + price * item.quantity;
-  }, 0);
-  
-  const shipping = subtotal > 150 ? 0 : 15;
-  const tax = subtotal * 0.08; // 8% tax
-  const total = subtotal + shipping + tax;
+  const [form, setForm] = useState<FormData>({
+    email: '', firstName: '', lastName: '', address: '', apartment: '',
+    city: '', state: '', zip: '', cardNumber: '', cardName: '',
+    expiry: '', cvv: '', billingOption: 'same', shippingMethod: 'standard',
+  });
+
+  const set = (key: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+    setForm(f => ({ ...f, [key]: e.target.value }));
+
+  const subtotal = items.reduce((acc, item) => acc + (item.product.salePrice || item.product.price) * item.quantity, 0);
+  const shippingCost = form.shippingMethod === 'express' ? 25 : subtotal >= 150 ? 0 : 15;
+  const tax = subtotal * 0.08;
+  const total = subtotal + shippingCost + tax;
+
+  const inputCls = "w-full border border-border bg-transparent px-4 py-3 text-sm outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground rounded-lg";
 
   const handleComplete = (e: React.FormEvent) => {
     e.preventDefault();
     setIsComplete(true);
-    setTimeout(() => {
-      clearCart();
-    }, 2000);
+    clearCart();
   };
+
+  const handleNext = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep(s => (s < 3 ? (s + 1) as 1 | 2 | 3 : s));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const stepLabels = ['Information', 'Shipping', 'Payment'];
 
   if (items.length === 0 && !isComplete) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 pt-20">
-        <h1 className="font-serif text-3xl mb-4">Your bag is empty</h1>
-        <p className="text-muted-foreground mb-8">Looks like you haven't added anything to your bag yet.</p>
+        <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mb-6">
+          <Package size={28} strokeWidth={1.5} className="text-muted-foreground" />
+        </div>
+        <h1 className="font-serif text-3xl mb-3">Your bag is empty</h1>
+        <p className="text-muted-foreground mb-8">Add some pieces to your bag before checking out.</p>
         <Link href="/shop">
-          <button className="bg-foreground text-background uppercase tracking-[0.12em] text-[11px] px-8 py-3 font-medium">
-            Continue Shopping
+          <button className="bg-foreground text-background uppercase tracking-[0.12em] text-[11px] px-8 py-3 font-medium rounded-lg hover:opacity-90 transition-opacity">
+            Browse the Collection
           </button>
         </Link>
       </div>
@@ -42,239 +88,432 @@ export default function CheckoutPage() {
 
   if (isComplete) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 pt-20">
-        <motion.div 
+      <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-16 pb-24">
+        <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", bounce: 0.5, duration: 0.6 }}
-          className="w-20 h-20 bg-primary/20 text-primary rounded-full flex items-center justify-center mb-8"
+          transition={{ type: 'spring', bounce: 0.4, duration: 0.7 }}
+          className="w-20 h-20 rounded-full flex items-center justify-center mb-8"
+          style={{ background: '#C9A96E20' }}
         >
-          <Check size={40} strokeWidth={2} />
+          <Check size={36} strokeWidth={2} style={{ color: '#C9A96E' }} />
         </motion.div>
-        <h1 className="font-serif text-4xl mb-4">Thank you for your order</h1>
-        <p className="text-muted-foreground mb-8 max-w-md">
-          We've received your order and will send a confirmation email with tracking details shortly. Order #LM-{Math.floor(Math.random() * 100000)}
-        </p>
-        <Link href="/shop">
-          <button className="bg-foreground text-background uppercase tracking-[0.12em] text-[11px] px-8 py-3 font-medium">
-            Continue Shopping
-          </button>
-        </Link>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="max-w-md"
+        >
+          <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-3">Order Confirmed</p>
+          <h1 className="font-serif text-4xl md:text-5xl mb-4">Thank You{form.firstName ? `, ${form.firstName}` : ''}!</h1>
+          <p className="text-muted-foreground mb-2">
+            Your order <span className="text-foreground font-medium">{orderNumber}</span> has been placed successfully.
+          </p>
+          <p className="text-muted-foreground text-sm mb-10">
+            We'll send a confirmation to{form.email ? ` ${form.email}` : ' your email'} with tracking details once your order ships.
+          </p>
+
+          <div className="grid grid-cols-3 gap-4 mb-10 text-center">
+            {[
+              { icon: <Package size={22} strokeWidth={1.5} />, label: 'Processing', sub: 'Today' },
+              { icon: <Truck size={22} strokeWidth={1.5} />, label: 'Shipping', sub: '1–3 days' },
+              { icon: <Check size={22} strokeWidth={1.5} />, label: 'Delivered', sub: '3–5 days' },
+            ].map((s, i) => (
+              <div key={i} className="bg-secondary rounded-xl p-4 flex flex-col items-center gap-2">
+                <div className="text-muted-foreground">{s.icon}</div>
+                <p className="text-xs font-medium">{s.label}</p>
+                <p className="text-[10px] text-muted-foreground">{s.sub}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/shop">
+              <button className="bg-foreground text-background uppercase tracking-[0.12em] text-[11px] px-8 py-3 font-medium rounded-lg hover:opacity-90 transition-opacity">
+                Continue Shopping
+              </button>
+            </Link>
+            <Link href="/wishlist">
+              <button className="border border-border uppercase tracking-[0.12em] text-[11px] px-8 py-3 font-medium rounded-lg hover:bg-secondary transition-colors">
+                View Wishlist
+              </button>
+            </Link>
+          </div>
+        </motion.div>
       </div>
     );
   }
 
-  const inputClasses = "w-full border border-border bg-transparent px-4 py-3 text-sm outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground";
-
   return (
-    <div className="pt-24 pb-24 min-h-screen bg-card">
+    <div className="pt-20 pb-24 min-h-screen bg-[#FAFAF9]">
       <div className="container mx-auto px-4 md:px-8 max-w-6xl">
-        <Link href="/" className="font-serif text-3xl tracking-widest text-center block mb-12">
+
+        {/* Logo */}
+        <Link href="/" className="font-serif text-2xl tracking-widest text-center block py-8">
           LUMIÈRE
         </Link>
 
-        <div className="flex flex-col lg:flex-row gap-12">
-          
+        {/* Step progress */}
+        <div className="flex items-center justify-center gap-0 mb-10">
+          {stepLabels.map((label, i) => {
+            const num = i + 1;
+            const done = step > num;
+            const active = step === num;
+            return (
+              <React.Fragment key={label}>
+                <div className="flex flex-col items-center">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300 ${
+                      done ? 'bg-foreground text-background' :
+                      active ? 'border-2 border-foreground text-foreground' :
+                      'border-2 border-border text-muted-foreground'
+                    }`}
+                  >
+                    {done ? <Check size={14} strokeWidth={2.5} /> : num}
+                  </div>
+                  <span className={`mt-1.5 text-[10px] uppercase tracking-widest hidden sm:block ${active ? 'text-foreground' : 'text-muted-foreground'}`}>
+                    {label}
+                  </span>
+                </div>
+                {i < stepLabels.length - 1 && (
+                  <div className={`h-px w-16 md:w-24 mx-2 mb-5 sm:mb-0 transition-colors duration-300 ${step > num ? 'bg-foreground' : 'bg-border'}`} />
+                )}
+              </React.Fragment>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-8 xl:gap-14">
+
           {/* Left: Form */}
           <div className="w-full lg:w-3/5">
-            {/* Stepper */}
-            <div className="flex items-center text-[10px] uppercase tracking-widest font-medium mb-10 overflow-x-auto pb-2">
-              <span className={`${step >= 1 ? 'text-foreground' : 'text-muted-foreground'}`}>Information</span>
-              <ChevronRight size={14} className="mx-3 text-muted-foreground flex-shrink-0" />
-              <span className={`${step >= 2 ? 'text-foreground' : 'text-muted-foreground'}`}>Shipping</span>
-              <ChevronRight size={14} className="mx-3 text-muted-foreground flex-shrink-0" />
-              <span className={`${step >= 3 ? 'text-foreground' : 'text-muted-foreground'}`}>Payment</span>
-            </div>
+            <AnimatePresence mode="wait">
 
-            <form onSubmit={step === 3 ? handleComplete : (e) => { e.preventDefault(); setStep(step + 1); }}>
-              <AnimatePresence mode="wait">
-                {step === 1 && (
-                  <motion.div 
-                    key="step1"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="space-y-6"
-                  >
-                    <div>
-                      <h2 className="font-serif text-2xl mb-4">Contact Information</h2>
-                      <input type="email" placeholder="Email" className={inputClasses} required />
+              {/* Step 1: Information */}
+              {step === 1 && (
+                <motion.form
+                  key="step1"
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -30 }}
+                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                  onSubmit={handleNext}
+                  className="space-y-8"
+                >
+                  <div className="bg-background border border-border rounded-2xl p-6 space-y-4">
+                    <h2 className="font-serif text-xl mb-2">Contact</h2>
+                    <input
+                      type="email"
+                      placeholder="Email address"
+                      value={form.email}
+                      onChange={set('email')}
+                      className={inputCls}
+                      required
+                    />
+                  </div>
+
+                  <div className="bg-background border border-border rounded-2xl p-6 space-y-4">
+                    <h2 className="font-serif text-xl mb-2">Shipping Address</h2>
+                    <div className="grid grid-cols-2 gap-4">
+                      <input type="text" placeholder="First name" value={form.firstName} onChange={set('firstName')} className={inputCls} required />
+                      <input type="text" placeholder="Last name" value={form.lastName} onChange={set('lastName')} className={inputCls} required />
                     </div>
-                    
-                    <div>
-                      <h2 className="font-serif text-2xl mb-4 mt-8">Shipping Address</h2>
-                      <div className="space-y-4">
-                        <div className="flex gap-4">
-                          <input type="text" placeholder="First Name" className={inputClasses} required />
-                          <input type="text" placeholder="Last Name" className={inputClasses} required />
+                    <input type="text" placeholder="Street address" value={form.address} onChange={set('address')} className={inputCls} required />
+                    <input type="text" placeholder="Apartment, suite, etc. (optional)" value={form.apartment} onChange={set('apartment')} className={inputCls} />
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <input type="text" placeholder="City" value={form.city} onChange={set('city')} className={inputCls} required />
+                      <select value={form.state} onChange={set('state')} className={inputCls} required>
+                        <option value="" disabled>State</option>
+                        {US_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                      <input type="text" placeholder="ZIP code" value={form.zip} onChange={set('zip')} className={inputCls} required maxLength={10} />
+                    </div>
+                  </div>
+
+                  <button type="submit" className="w-full py-4 text-[11px] uppercase tracking-[0.15em] font-medium text-white rounded-xl hover:opacity-90 transition-opacity" style={{ background: '#1A1A1A' }}>
+                    Continue to Shipping
+                  </button>
+                </motion.form>
+              )}
+
+              {/* Step 2: Shipping */}
+              {step === 2 && (
+                <motion.form
+                  key="step2"
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -30 }}
+                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                  onSubmit={handleNext}
+                  className="space-y-6"
+                >
+                  {/* Address summary */}
+                  <div className="bg-background border border-border rounded-2xl p-5 text-sm space-y-3">
+                    <div className="flex justify-between items-center pb-3 border-b border-border">
+                      <span className="text-muted-foreground w-16 flex-shrink-0">Contact</span>
+                      <span className="flex-1 ml-4 truncate">{form.email || 'Not provided'}</span>
+                      <button type="button" onClick={() => setStep(1)} className="text-[10px] uppercase tracking-widest underline ml-4 hover:opacity-70">Change</button>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground w-16 flex-shrink-0">Ship to</span>
+                      <span className="flex-1 ml-4 text-sm">
+                        {[form.address, form.city, form.state, form.zip].filter(Boolean).join(', ') || 'Address not provided'}
+                      </span>
+                      <button type="button" onClick={() => setStep(1)} className="text-[10px] uppercase tracking-widest underline ml-4 hover:opacity-70">Change</button>
+                    </div>
+                  </div>
+
+                  <div className="bg-background border border-border rounded-2xl overflow-hidden">
+                    <div className="px-5 py-4 border-b border-border">
+                      <h2 className="font-serif text-xl">Shipping Method</h2>
+                    </div>
+                    <label
+                      className={`flex items-center justify-between px-5 py-4 cursor-pointer border-b border-border transition-colors ${form.shippingMethod === 'standard' ? 'bg-secondary/50' : 'hover:bg-secondary/30'}`}
+                      onClick={() => setForm(f => ({ ...f, shippingMethod: 'standard' }))}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${form.shippingMethod === 'standard' ? 'border-foreground' : 'border-border'}`}>
+                          {form.shippingMethod === 'standard' && <div className="w-2 h-2 rounded-full bg-foreground" />}
                         </div>
-                        <input type="text" placeholder="Address" className={inputClasses} required />
-                        <input type="text" placeholder="Apartment, suite, etc. (optional)" className={inputClasses} />
-                        <div className="flex gap-4">
-                          <input type="text" placeholder="City" className={inputClasses} required />
-                          <select className={inputClasses} required defaultValue="">
-                            <option value="" disabled>State / Province</option>
-                            <option value="ca">California</option>
-                            <option value="ny">New York</option>
-                            <option value="tx">Texas</option>
-                          </select>
-                          <input type="text" placeholder="ZIP / Postal Code" className={inputClasses} required />
+                        <div>
+                          <p className="text-sm font-medium">Standard Shipping</p>
+                          <p className="text-xs text-muted-foreground">3–5 business days</p>
                         </div>
                       </div>
-                    </div>
-                    <button type="submit" className="w-full md:w-auto bg-foreground text-background uppercase tracking-[0.12em] text-[11px] px-8 py-4 font-medium mt-8 hover:opacity-90">
-                      Continue to Shipping
+                      <span className="text-sm font-medium">{subtotal >= 150 ? 'Free' : '$15.00'}</span>
+                    </label>
+                    <label
+                      className={`flex items-center justify-between px-5 py-4 cursor-pointer transition-colors ${form.shippingMethod === 'express' ? 'bg-secondary/50' : 'hover:bg-secondary/30'}`}
+                      onClick={() => setForm(f => ({ ...f, shippingMethod: 'express' }))}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${form.shippingMethod === 'express' ? 'border-foreground' : 'border-border'}`}>
+                          {form.shippingMethod === 'express' && <div className="w-2 h-2 rounded-full bg-foreground" />}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">Express Shipping</p>
+                          <p className="text-xs text-muted-foreground">1–2 business days</p>
+                        </div>
+                      </div>
+                      <span className="text-sm font-medium">$25.00</span>
+                    </label>
+                  </div>
+
+                  <div className="flex items-center gap-4 pt-2">
+                    <button type="button" onClick={() => setStep(1)} className="flex items-center gap-1 text-[11px] uppercase tracking-widest hover:opacity-70 transition-opacity">
+                      <ChevronRight size={14} className="rotate-180" /> Back
                     </button>
-                  </motion.div>
-                )}
+                    <button type="submit" className="flex-1 py-4 text-[11px] uppercase tracking-[0.15em] font-medium text-white rounded-xl hover:opacity-90 transition-opacity" style={{ background: '#1A1A1A' }}>
+                      Continue to Payment
+                    </button>
+                  </div>
+                </motion.form>
+              )}
 
-                {step === 2 && (
-                  <motion.div 
-                    key="step2"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="space-y-6"
-                  >
-                    <div className="border border-border p-4 text-sm space-y-4 rounded-sm bg-background">
-                      <div className="flex justify-between items-center pb-4 border-b border-border">
-                        <div className="text-muted-foreground w-20">Contact</div>
-                        <div className="flex-1">customer@example.com</div>
-                        <button type="button" onClick={() => setStep(1)} className="text-[10px] uppercase tracking-widest underline">Change</button>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <div className="text-muted-foreground w-20">Ship to</div>
-                        <div className="flex-1">123 Main St, New York NY 10001</div>
-                        <button type="button" onClick={() => setStep(1)} className="text-[10px] uppercase tracking-widest underline">Change</button>
-                      </div>
-                    </div>
-
-                    <h2 className="font-serif text-2xl mb-4 mt-8">Shipping Method</h2>
-                    <div className="border border-border rounded-sm bg-background">
-                      <label className="flex items-center justify-between p-4 cursor-pointer border-b border-border">
-                        <div className="flex items-center gap-4">
-                          <input type="radio" name="shipping" defaultChecked className="accent-foreground" />
-                          <span className="text-sm font-medium">Standard Shipping (3-5 business days)</span>
-                        </div>
-                        <span className="text-sm">{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
-                      </label>
-                      <label className="flex items-center justify-between p-4 cursor-pointer">
-                        <div className="flex items-center gap-4">
-                          <input type="radio" name="shipping" className="accent-foreground" />
-                          <span className="text-sm font-medium">Express Shipping (1-2 business days)</span>
-                        </div>
-                        <span className="text-sm">$25.00</span>
-                      </label>
-                    </div>
-
-                    <div className="flex items-center gap-4 mt-8">
-                      <button type="button" onClick={() => setStep(1)} className="text-[11px] uppercase tracking-widest hover:underline flex items-center">
-                        <ChevronRight size={14} className="rotate-180 mr-1" /> Return
-                      </button>
-                      <button type="submit" className="flex-1 md:flex-none bg-foreground text-background uppercase tracking-[0.12em] text-[11px] px-8 py-4 font-medium hover:opacity-90">
-                        Continue to Payment
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-
-                {step === 3 && (
-                  <motion.div 
-                    key="step3"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="space-y-6"
-                  >
-                    <h2 className="font-serif text-2xl mb-4">Payment</h2>
-                    <p className="text-sm text-muted-foreground mb-4">All transactions are secure and encrypted.</p>
-                    
-                    <div className="border border-border p-6 rounded-sm bg-background space-y-4">
-                      <div className="flex gap-4">
-                        <input type="text" placeholder="Card number" className={inputClasses} required />
-                      </div>
-                      <input type="text" placeholder="Name on card" className={inputClasses} required />
-                      <div className="flex gap-4">
-                        <input type="text" placeholder="Expiration date (MM/YY)" className={inputClasses} required />
-                        <input type="text" placeholder="Security code" className={inputClasses} required />
+              {/* Step 3: Payment */}
+              {step === 3 && (
+                <motion.form
+                  key="step3"
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -30 }}
+                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                  onSubmit={handleComplete}
+                  className="space-y-6"
+                >
+                  <div className="bg-background border border-border rounded-2xl overflow-hidden">
+                    <div className="px-5 py-4 border-b border-border flex items-center justify-between">
+                      <h2 className="font-serif text-xl">Payment</h2>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Lock size={12} strokeWidth={1.5} />
+                        Secure & encrypted
                       </div>
                     </div>
-
-                    <h2 className="font-serif text-2xl mb-4 mt-8">Billing Address</h2>
-                    <div className="border border-border rounded-sm bg-background">
-                      <label className="flex items-center gap-4 p-4 cursor-pointer border-b border-border">
-                        <input type="radio" name="billing" defaultChecked className="accent-foreground" />
-                        <span className="text-sm">Same as shipping address</span>
-                      </label>
-                      <label className="flex items-center gap-4 p-4 cursor-pointer">
-                        <input type="radio" name="billing" className="accent-foreground" />
-                        <span className="text-sm">Use a different billing address</span>
-                      </label>
+                    <div className="p-5 space-y-4">
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="Card number"
+                          value={form.cardNumber}
+                          onChange={e => {
+                            const v = e.target.value.replace(/\D/g, '').slice(0, 16);
+                            const formatted = v.match(/.{1,4}/g)?.join(' ') || v;
+                            setForm(f => ({ ...f, cardNumber: formatted }));
+                          }}
+                          className={inputCls}
+                          required
+                          maxLength={19}
+                        />
+                        <CreditCard size={18} strokeWidth={1.5} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Name on card"
+                        value={form.cardName}
+                        onChange={set('cardName')}
+                        className={inputCls}
+                        required
+                      />
+                      <div className="grid grid-cols-2 gap-4">
+                        <input
+                          type="text"
+                          placeholder="MM / YY"
+                          value={form.expiry}
+                          onChange={e => {
+                            const v = e.target.value.replace(/\D/g, '').slice(0, 4);
+                            const formatted = v.length > 2 ? `${v.slice(0, 2)} / ${v.slice(2)}` : v;
+                            setForm(f => ({ ...f, expiry: formatted }));
+                          }}
+                          className={inputCls}
+                          required
+                          maxLength={7}
+                        />
+                        <input
+                          type="text"
+                          placeholder="CVV"
+                          value={form.cvv}
+                          onChange={e => setForm(f => ({ ...f, cvv: e.target.value.replace(/\D/g, '').slice(0, 4) }))}
+                          className={inputCls}
+                          required
+                          maxLength={4}
+                        />
+                      </div>
                     </div>
+                  </div>
 
-                    <div className="flex items-center gap-4 mt-8">
-                      <button type="button" onClick={() => setStep(2)} className="text-[11px] uppercase tracking-widest hover:underline flex items-center">
-                        <ChevronRight size={14} className="rotate-180 mr-1" /> Return
-                      </button>
-                      <button type="submit" className="flex-1 md:flex-none bg-foreground text-background uppercase tracking-[0.12em] text-[11px] px-8 py-4 font-medium hover:opacity-90">
-                        Pay ${total.toFixed(2)}
-                      </button>
+                  <div className="bg-background border border-border rounded-2xl overflow-hidden">
+                    <div className="px-5 py-4 border-b border-border">
+                      <h2 className="font-serif text-xl">Billing Address</h2>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </form>
+                    <label
+                      className={`flex items-center gap-3 px-5 py-4 cursor-pointer border-b border-border transition-colors ${form.billingOption === 'same' ? 'bg-secondary/50' : 'hover:bg-secondary/30'}`}
+                      onClick={() => setForm(f => ({ ...f, billingOption: 'same' }))}
+                    >
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${form.billingOption === 'same' ? 'border-foreground' : 'border-border'}`}>
+                        {form.billingOption === 'same' && <div className="w-2 h-2 rounded-full bg-foreground" />}
+                      </div>
+                      <span className="text-sm">Same as shipping address</span>
+                    </label>
+                    <label
+                      className={`flex items-center gap-3 px-5 py-4 cursor-pointer transition-colors ${form.billingOption === 'different' ? 'bg-secondary/50' : 'hover:bg-secondary/30'}`}
+                      onClick={() => setForm(f => ({ ...f, billingOption: 'different' }))}
+                    >
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${form.billingOption === 'different' ? 'border-foreground' : 'border-border'}`}>
+                        {form.billingOption === 'different' && <div className="w-2 h-2 rounded-full bg-foreground" />}
+                      </div>
+                      <span className="text-sm">Use a different billing address</span>
+                    </label>
+                  </div>
+
+                  <div className="flex items-center gap-4 pt-2">
+                    <button type="button" onClick={() => setStep(2)} className="flex items-center gap-1 text-[11px] uppercase tracking-widest hover:opacity-70 transition-opacity">
+                      <ChevronRight size={14} className="rotate-180" /> Back
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 py-4 text-[11px] uppercase tracking-[0.15em] font-medium text-white rounded-xl hover:opacity-90 transition-opacity"
+                      style={{ background: '#1A1A1A' }}
+                    >
+                      Pay ${total.toFixed(2)}
+                    </button>
+                  </div>
+
+                  <p className="text-xs text-muted-foreground text-center flex items-center justify-center gap-1.5">
+                    <Lock size={11} strokeWidth={1.5} />
+                    Your payment information is encrypted and secure.
+                  </p>
+                </motion.form>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Right: Order Summary */}
-          <div className="w-full lg:w-2/5">
-            <div className="sticky top-28 bg-background border border-border p-6 rounded-sm">
-              <h3 className="font-serif text-xl mb-6">Order Summary</h3>
-              
-              <div className="space-y-4 mb-6 max-h-[40vh] overflow-y-auto pr-2">
+          <div className="w-full lg:w-2/5 order-first lg:order-last">
+            <div className="lg:sticky lg:top-24 bg-background border border-border rounded-2xl overflow-hidden">
+              <div className="px-6 py-5 border-b border-border">
+                <h3 className="font-serif text-xl">Order Summary</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">{items.length} {items.length === 1 ? 'item' : 'items'}</p>
+              </div>
+
+              {/* Items */}
+              <div className="px-6 py-5 space-y-5 max-h-[320px] overflow-y-auto border-b border-border">
                 {items.map(item => (
                   <div key={`${item.product.id}-${item.size}`} className="flex gap-4">
-                    <div className="w-16 h-20 bg-secondary flex-shrink-0 relative">
+                    <div className="w-16 h-20 bg-secondary rounded-xl flex-shrink-0 relative overflow-hidden">
                       <img src={item.product.images[0]} alt={item.product.name} className="w-full h-full object-cover" />
-                      <span className="absolute -top-2 -right-2 w-5 h-5 bg-foreground text-background text-[10px] rounded-full flex items-center justify-center">
+                      <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-foreground text-background text-[10px] rounded-full flex items-center justify-center font-bold">
                         {item.quantity}
                       </span>
                     </div>
-                    <div className="flex-1 flex flex-col justify-center text-sm">
-                      <div className="flex justify-between">
-                        <span className="font-serif">{item.product.name}</span>
-                        <span className="font-medium">${(item.product.salePrice || item.product.price) * item.quantity}</span>
+                    <div className="flex-1 flex flex-col justify-center min-w-0">
+                      <div className="flex justify-between items-start gap-2">
+                        <p className="font-serif text-sm leading-tight truncate">{item.product.name}</p>
+                        <p className="text-sm font-medium flex-shrink-0">${(item.product.salePrice || item.product.price) * item.quantity}</p>
                       </div>
-                      <span className="text-muted-foreground text-xs">{item.product.metal} {item.size && `/ Size ${item.size}`}</span>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {item.metal || item.product.metal}{item.size ? ` / Size ${item.size}` : ''}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
-              
-              <div className="border-t border-border pt-6 space-y-3 text-sm">
+
+              {/* Discount code */}
+              <div className="px-6 py-4 border-b border-border">
+                <div className="flex gap-3">
+                  <input
+                    type="text"
+                    placeholder="Discount code"
+                    className="flex-1 border border-border rounded-lg px-3 py-2.5 text-sm outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground bg-transparent"
+                  />
+                  <button type="button" className="px-4 py-2.5 border border-border rounded-lg text-[11px] uppercase tracking-widest font-medium hover:bg-secondary transition-colors">
+                    Apply
+                  </button>
+                </div>
+              </div>
+
+              {/* Totals */}
+              <div className="px-6 py-5 space-y-3 text-sm">
                 <div className="flex justify-between text-muted-foreground">
                   <span>Subtotal</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                  <span>
+                    {shippingCost === 0
+                      ? <span className="text-foreground">Free</span>
+                      : `$${shippingCost.toFixed(2)}`
+                    }
+                  </span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
-                  <span>Taxes</span>
+                  <span>Tax (8%)</span>
                   <span>${tax.toFixed(2)}</span>
                 </div>
-              </div>
-              
-              <div className="border-t border-border mt-6 pt-6 flex justify-between items-end">
-                <span className="text-base uppercase tracking-widest">Total</span>
-                <div className="text-right">
-                  <span className="text-xs text-muted-foreground mr-2">USD</span>
-                  <span className="text-2xl font-serif">${total.toFixed(2)}</span>
+
+                <div className="border-t border-border pt-4 flex justify-between items-center">
+                  <span className="font-medium">Total</span>
+                  <div className="text-right">
+                    <span className="text-xs text-muted-foreground mr-1.5">USD</span>
+                    <span className="text-2xl font-serif">${total.toFixed(2)}</span>
+                  </div>
                 </div>
               </div>
+
+              {/* Free shipping notice */}
+              {subtotal < 150 && (
+                <div className="px-6 pb-5">
+                  <div className="bg-secondary rounded-xl p-3 text-xs text-muted-foreground flex items-center gap-2">
+                    <Truck size={14} strokeWidth={1.5} className="flex-shrink-0" />
+                    Add ${(150 - subtotal).toFixed(2)} more for free standard shipping
+                  </div>
+                </div>
+              )}
             </div>
           </div>
+
         </div>
       </div>
     </div>
