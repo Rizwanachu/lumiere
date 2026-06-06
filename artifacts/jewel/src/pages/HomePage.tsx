@@ -89,7 +89,7 @@ export default function HomePage() {
               hidden: { opacity: 0 },
               visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
             }}
-            className="flex flex-wrap justify-center overflow-hidden mb-6"
+            className="flex flex-wrap justify-center overflow-hidden flex-row mb-[24px] pt-[0px] pb-[0px]"
           >
             {headline.split(' ').map((word, i) => (
               <motion.span
@@ -98,7 +98,7 @@ export default function HomePage() {
                   hidden: { opacity: 0, y: 50, rotateX: -40 },
                   visible: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0.9, ease: [0.2, 0.65, 0.3, 0.9] } },
                 }}
-                className="font-serif sm:text-5xl md:text-7xl lg:text-8xl tracking-wide mx-[0.2em] mt-[0px] mb-[0px] pt-[10px] pb-[10px] text-[42px]"
+                className="font-serif sm:text-5xl md:text-7xl lg:text-8xl tracking-wide mx-[0.2em] pb-[10px] text-[42px] pt-[0px] mt-[-8px] mb-[-8px]"
                 style={{ display: 'inline-block' }}
               >
                 {word}
