@@ -178,7 +178,7 @@ export default function HomePage() {
         <SectionReveal>
           <div className="md:mb-10 text-center mb-[35px]">
             <p className="text-[10px] uppercase tracking-[0.3em] text-[#C9A96E] mb-3">Shop by Category</p>
-            <div className="flex flex-col md:flex-row gap-4 justify-between items-start">
+            <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
               <h2 className="font-serif text-3xl md:text-4xl">Explore the Collection</h2>
               <Link href="/categories" className="group flex text-[11px] uppercase tracking-[0.15em] font-medium hover:opacity-70 transition-opacity justify-center items-center flex-row">
                 View All <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
