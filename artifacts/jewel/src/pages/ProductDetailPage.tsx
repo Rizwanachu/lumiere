@@ -8,6 +8,7 @@ import { useWishlist } from '@/store/useWishlist';
 import { useRecentlyViewed } from '@/store/useRecentlyViewed';
 import { toast } from 'sonner';
 import { ProductCard } from '@/components/ProductCard';
+import { proxyImg } from '@/lib/imgProxy';
 
 export default function ProductDetailPage() {
   const [, params] = useRoute('/product/:slug');
@@ -109,7 +110,7 @@ export default function ProductDetailPage() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  src={product.images[selectedImage]}
+                  src={proxyImg(product.images[selectedImage])}
                   alt={`${product.name} - View ${selectedImage + 1}`}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
@@ -124,7 +125,7 @@ export default function ProductDetailPage() {
                   onClick={() => setSelectedImage(i)}
                   className={`w-20 md:w-24 aspect-[4/5] flex-shrink-0 bg-secondary border-b-2 transition-colors ${selectedImage === i ? 'border-foreground' : 'border-transparent hover:border-border'}`}
                 >
-                  <img src={img} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-cover" />
+                  <img src={proxyImg(img)} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>

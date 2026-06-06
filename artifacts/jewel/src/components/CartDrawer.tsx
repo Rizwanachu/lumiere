@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, Trash2 } from 'lucide-react';
 import { Link } from 'wouter';
 import { useCart } from '@/store/useCart';
+import { proxyImg } from '@/lib/imgProxy';
 
 export function CartDrawer() {
   const { items, isOpen, toggleOpen, removeItem, updateQuantity } = useCart();
@@ -73,7 +74,7 @@ export function CartDrawer() {
                   <div key={`${item.product.id}-${item.size}`} className="flex gap-4">
                     <Link href={`/product/${item.product.slug}`} onClick={toggleOpen} className="w-24 h-32 flex-shrink-0 bg-secondary">
                       <img 
-                        src={item.product.images[0]} 
+                        src={proxyImg(item.product.images[0])} 
                         alt={item.product.name} 
                         className="w-full h-full object-cover"
                       />

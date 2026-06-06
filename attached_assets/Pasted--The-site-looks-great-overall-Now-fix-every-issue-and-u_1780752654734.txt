@@ -1,0 +1,157 @@
+
+The site looks great overall! Now fix every issue and upgrade the quality to production level. Go through each item below carefully:
+
+
+🔴 CRITICAL FIXES — IMAGES BROKEN
+
+ALL images are broken or showing placeholders. Fix this now:
+
+1. Replace ALL Unsplash URLs with working, reliable image sources. Use these exact Unsplash direct URLs that are stable:
+
+Hero background:
+  https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&q=80
+
+Product images (use these, assign to products):
+  Ring 1: https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80
+  Ring 2: https://images.unsplash.com/photo-1573408301185-9519f94652b1?w=600&q=80
+  Ring 3: https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=600&q=80
+  Necklace 1: https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80
+  Necklace 2: https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=600&q=80
+  Earrings 1: https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&q=80
+  Earrings 2: https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=600&q=80
+  Bracelet 1: https://images.unsplash.com/photo-1573408301185-9519f94652b1?w=600&q=80
+  Bracelet 2: https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=600&q=80
+
+Collection tiles:
+  Rings tile: https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80
+  Necklaces tile: https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80
+  Earrings tile: https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80
+
+Instagram grid (6 images):
+  https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&q=80
+  https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80
+  https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80
+  https://images.unsplash.com/photo-1573408301185-9519f94652b1?w=400&q=80
+  https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&q=80
+  https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=400&q=80
+
+Editorial split section image:
+  https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=800&q=80
+
+2. In next.config.js, make sure images.domains includes 'images.unsplash.com'
+3. Use standard  tags with loading="lazy" as fallback if next/image keeps failing
+
+
+🟠 UPGRADE — ANIMATIONS & HOVER EFFECTS
+
+Add these interactions that are currently missing or not working:
+
+Product cards:
+  - On hover: image smoothly scales to 1.06 (transform: scale(1.06), transition: 400ms ease)
+  - Quick-add button: hidden by default, slides up from bottom on card hover (translateY(0) from translateY(100%))
+  - Wishlist heart: appears top-right on hover, fills red on toggle
+  - Card lifts slightly: transform: translateY(-4px) on hover
+
+Buttons (all CTAs):
+  - Hover: background fills, color inverts (outline → solid)
+  - Active/click: scale(0.97)
+  - Transition: all 250ms ease
+
+Navigation:
+  - On scroll past hero: navbar gets white background + subtle bottom border + box-shadow: 0 1px 12px rgba(0,0,0,0.06)
+  - Transition: background 300ms ease
+  - Nav links: on hover, show a thin gold underline that slides in from left (width 0→100%)
+
+Section reveals (Framer Motion):
+  - Every section fades up on scroll: initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
+  - Stagger children in product grid: each card delays by index * 0.08s
+  - Collections tiles: scale from 0.97 to 1 on entry
+
+Hero:
+  - Headline: each word fades in with stagger (0.1s delay per word)
+  - Subtext: fades in after headline, 0.6s delay
+  - CTA button: fades in last, 0.9s delay
+
+Marquee ticker:
+  - Must be smooth infinite scroll, no jumps or pauses
+  - Pause on hover
+
+
+🟡 UPGRADE — CART DRAWER
+
+The cart icon must open a slide-in drawer from the RIGHT side:
+  - Overlay: dark semi-transparent backdrop
+  - Drawer: white panel, 420px wide (full width on mobile)
+  - Slides in: translateX(100%) → translateX(0), 350ms ease
+  - Contents: cart items list, quantity stepper (+/-), remove (×), subtotal, free shipping progress bar, checkout button
+  - Close on: × button, backdrop click, Escape key
+  - Item count badge: gold circle on bag icon (shows 0 when empty, hides when 0)
+
+
+🟡 UPGRADE — PRODUCT PAGE
+
+Make sure /product/[slug] has:
+  - Image gallery: main image large + 3–4 thumbnail strip below. Click thumbnail → main image changes with crossfade
+  - Sticky right panel on desktop (position: sticky, top: 100px)
+  - Size selector: ring sizes 5–10, displayed as clickable boxes, selected state = filled dark
+  - Metal selector: Yellow Gold / White Gold / Rose Gold — pill buttons
+  - Quantity stepper: − / number / +
+  - "Add to Cart" button: full width, dark background, gold hover
+  - "Add to Wishlist": outlined button beside or below
+  - Accordion (Details, Materials & Care, Shipping): smooth height animation, + / − icon toggles
+  - Mobile: gallery stacks above info panel, sticky bottom bar with price + Add to Cart
+
+
+🟡 UPGRADE — SHOP/FILTER PAGE
+
+  - Filters must actually work (filter products by category, price, metal)
+  - URL updates when filters change (?category=rings&metal=gold)
+  - Active filter chips shown above grid with × to remove each
+  - "X products found" count updates dynamically
+  - Sort dropdown: Featured, Price Low→High, Price High→Low, Newest
+  - Mobile: filters open as bottom sheet modal (slides up from bottom)
+  - Loading skeleton cards while filtering (pulse animation)
+
+
+🟢 UPGRADE — MOBILE EXPERIENCE
+
+Test and fix every breakpoint. Required:
+  - 375px iPhone SE: single column grid, all text readable, no overflow
+  - Navigation: hamburger → full-screen white overlay menu, links stagger in
+  - Product page: sticky "Add to Cart" bar fixed at bottom of screen
+  - Cart drawer: 100% width on mobile
+  - Collections grid: stacks to 1 column on mobile, 2 on tablet
+  - Footer: single column on mobile
+  - All tap targets minimum 44×44px
+  - No horizontal scroll anywhere at any breakpoint
+
+
+🟢 UPGRADE — POLISH & DETAILS
+
+  - Add a "New" badge (thin gold border label) on newest products
+  - Sale prices: original price struck through in gray, sale price in dark
+  - Sold out products: image grayscale filter, "Sold Out" overlay, button disabled
+  - Toast notification: when item added to cart, show bottom-right toast "Added to cart ✓" — slides in, auto-dismisses after 2.5s
+  - Breadcrumbs on shop and product pages: Home > Shop > Rings > Product Name
+  - Page titles and meta descriptions on every page (Next.js metadata)
+  - Smooth page transitions between routes (Framer Motion AnimatePresence)
+  - 404 page: minimal, on-brand, with link back to shop
+  - Loading state: skeleton cards (pulse gray) while products load
+
+
+🔵 VERCEL DEPLOY CHECK
+
+Before finishing:
+  - Run `npm run build` — fix ALL build errors and TypeScript errors
+  - Ensure no `window` or `document` references outside useEffect (SSR safety)
+  - Add vercel.json if needed for routing
+  - Create .env.example with placeholder vars
+  - Confirm next.config.js has images.domains: ['images.unsplash.com']
+  - Test that `vercel --prod` or GitHub → Vercel deploy would work with zero config
+
+After all fixes, show me:
+1. The updated homepage with working images
+2. A product detail page
+3. The cart drawer open
+4. The mobile view at 375px width
+  

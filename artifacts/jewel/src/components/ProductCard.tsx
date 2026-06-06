@@ -6,6 +6,7 @@ import { Product } from '@/data/products';
 import { useWishlist } from '@/store/useWishlist';
 import { useCart } from '@/store/useCart';
 import { toast } from 'sonner';
+import { proxyImg } from '@/lib/imgProxy';
 
 interface ProductCardProps {
   product: Product;
@@ -39,7 +40,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     <Link href={`/product/${product.slug}`} className="group block" data-testid={`card-product-${product.id}`}>
       <div className="relative aspect-[4/5] bg-secondary mb-4 overflow-hidden">
         <img
-          src={product.images[0]}
+          src={proxyImg(product.images[0])}
           alt={product.name}
           loading={priority ? 'eager' : 'lazy'}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"

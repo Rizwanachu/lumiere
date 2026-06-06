@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { SectionReveal } from '@/components/SectionReveal';
+import { proxyImg } from '@/lib/imgProxy';
 
 export default function AboutPage() {
   useEffect(() => {
@@ -24,8 +25,8 @@ export default function AboutPage() {
       {/* Image Full Bleed */}
       <section className="w-full h-[60vh] md:h-[80vh] mb-24">
         <img 
-          src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=2000&q=80" 
-          alt="Jewelry making process" 
+          src={proxyImg("https://images.unsplash.com/photo-1611085583191-a3b181a88401?auto=format&fit=crop&w=2000&q=80")}
+          alt="Jewelry on model" 
           className="w-full h-full object-cover"
         />
       </section>
@@ -57,12 +58,12 @@ export default function AboutPage() {
             <SectionReveal>
               <div className="grid grid-cols-2 gap-4">
                 <img 
-                  src="https://images.unsplash.com/photo-1582214309324-cfdb22f99d55?auto=format&fit=crop&w=600&q=80" 
+                  src={proxyImg("https://images.unsplash.com/photo-1602173574767-37ac01994b2a?auto=format&fit=crop&w=600&q=80")}
                   alt="Detail" 
                   className="w-full aspect-[4/5] object-cover"
                 />
                 <img 
-                  src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80" 
+                  src={proxyImg("https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=600&q=80")}
                   alt="Detail" 
                   className="w-full aspect-[4/5] object-cover mt-8"
                 />

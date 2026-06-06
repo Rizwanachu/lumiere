@@ -6,6 +6,7 @@ import { Marquee } from '@/components/Marquee';
 import { SectionReveal } from '@/components/SectionReveal';
 import { ProductCard } from '@/components/ProductCard';
 import { products } from '@/data/products';
+import { proxyImg } from '@/lib/imgProxy';
 
 export default function HomePage() {
   // Scroll to top on mount
@@ -22,7 +23,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative h-screen min-h-[600px] w-full bg-black overflow-hidden flex items-center justify-center">
         <img 
-          src="https://images.unsplash.com/photo-1599643478514-469077228a8a?auto=format&fit=crop&w=2000&q=80" 
+          src={proxyImg("https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=2000&q=80")}
           alt="Fine jewelry on model" 
           className="absolute inset-0 w-full h-full object-cover opacity-60"
         />
@@ -107,7 +108,7 @@ export default function HomePage() {
             <Link href="/shop?category=rings" className="group relative w-full h-full overflow-hidden block cursor-pointer">
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500 z-10" />
               <img 
-                src="https://images.unsplash.com/photo-1605100804763-247f67b2548e?auto=format&fit=crop&w=800&q=80" 
+                src={proxyImg("https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=800&q=80")}
                 alt="Rings" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -119,7 +120,7 @@ export default function HomePage() {
             <Link href="/shop?category=necklaces" className="group relative w-full h-full overflow-hidden block cursor-pointer">
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500 z-10" />
               <img 
-                src="https://images.unsplash.com/photo-1599643477877-530e55622067?auto=format&fit=crop&w=800&q=80" 
+                src={proxyImg("https://images.unsplash.com/photo-1589128777073-263566ae5e4d?auto=format&fit=crop&w=800&q=80")}
                 alt="Necklaces" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -131,7 +132,8 @@ export default function HomePage() {
             <Link href="/shop?category=earrings" className="group relative w-full h-full overflow-hidden block cursor-pointer">
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500 z-10" />
               <img 
-                src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80" 
+                src={proxyImg("https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80")}
+
                 alt="Earrings" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -152,7 +154,8 @@ export default function HomePage() {
               <SectionReveal>
                 <div className="aspect-[4/5] overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1000&q=80" 
+                    src={proxyImg("https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1000&q=80")}
+
                     alt="Atelier detail" 
                     className="w-full h-full object-cover"
                   />
@@ -187,16 +190,16 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
-              "1602173574767-37ac01994b2a",
-              "1506630368879-13809fb0366a",
-              "1543294001-f1cd4b1bcd5",
-              "1617038220319-276d3cfab638",
-              "1635767798638-3e2523d1e4dc",
-              "1583060233486-53860cb67bd3"
+              "photo-1602173574767-37ac01994b2a",
+              "photo-1589128777073-263566ae5e4d",
+              "photo-1611085583191-a3b181a88401",
+              "photo-1610694955371-d4a3e0ce4b52",
+              "photo-1584302179602-e4c3d3fd629d",
+              "photo-1588444837495-c6cfeb53f32d",
             ].map((id, i) => (
               <a key={i} href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="group block aspect-square relative overflow-hidden bg-secondary">
                 <img 
-                  src={`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=400&q=80`}
+                  src={proxyImg(`https://images.unsplash.com/${id}?auto=format&fit=crop&w=400&q=80`)}
                   alt={`Instagram photo ${i + 1}`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
