@@ -27,7 +27,7 @@ const categories = [
   {
     label: 'Bracelets',
     href: '/shop?category=bracelets',
-    image: 'https://images.unsplash.com/photo-1573408301185-9519f94652b1?w=900&q=80',
+    image: 'https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=900&q=80',
     description: 'Tennis, cuffs & delicate chains',
   },
 ];
