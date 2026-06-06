@@ -89,7 +89,7 @@ export default function HomePage() {
               hidden: { opacity: 0 },
               visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
             }}
-            className="flex flex-wrap justify-center overflow-hidden flex-row mb-[24px] pt-[0px] pb-[0px]"
+            className="flex flex-wrap justify-center overflow-hidden flex-row mb-[24px] pb-[0px] pt-[10px]"
           >
             {headline.split(' ').map((word, i) => (
               <motion.span
