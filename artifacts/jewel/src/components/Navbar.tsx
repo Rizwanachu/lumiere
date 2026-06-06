@@ -1,18 +1,47 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, ShoppingBag, Heart, Menu, X, ArrowRight } from 'lucide-react';
+import { Search, ShoppingBag, Heart, Menu, X, ArrowRight, ChevronDown } from 'lucide-react';
 import { useCart } from '@/store/useCart';
 import { useWishlist } from '@/store/useWishlist';
 import { products } from '@/data/products';
+
+const shopCategories = [
+  {
+    label: 'Rings',
+    href: '/shop?category=rings',
+    description: 'Stacking rings, solitaires & bands',
+    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80',
+  },
+  {
+    label: 'Necklaces',
+    href: '/shop?category=necklaces',
+    description: 'Pendants, chains & layering pieces',
+    image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80',
+  },
+  {
+    label: 'Earrings',
+    href: '/shop?category=earrings',
+    description: 'Studs, hoops & drops',
+    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&q=80',
+  },
+  {
+    label: 'Bracelets',
+    href: '/shop?category=bracelets',
+    description: 'Tennis, cuffs & delicate chains',
+    image: 'https://images.unsplash.com/photo-1573408301185-9519f94652b1?w=400&q=80',
+  },
+];
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isShopOpen, setIsShopOpen] = useState(false);
   const [location, navigate] = useLocation();
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const shopTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const cartItems = useCart((state) => state.items);
   const toggleCart = useCart((state) => state.toggleOpen);
@@ -33,13 +62,21 @@ export function Navbar() {
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
     setSearchQuery('');
+    setIsShopOpen(false);
   }, [location]);
 
   useEffect(() => {
-    if (isSearchOpen) {
-      setTimeout(() => searchInputRef.current?.focus(), 50);
-    }
+    if (isSearchOpen) setTimeout(() => searchInputRef.current?.focus(), 50);
   }, [isSearchOpen]);
+
+  const openShop = () => {
+    if (shopTimeoutRef.current) clearTimeout(shopTimeoutRef.current);
+    setIsShopOpen(true);
+  };
+
+  const closeShop = () => {
+    shopTimeoutRef.current = setTimeout(() => setIsShopOpen(false), 120);
+  };
 
   const searchResults = searchQuery.trim().length > 1
     ? products.filter(p =>
@@ -51,14 +88,6 @@ export function Navbar() {
   const navBg = isTransparent
     ? 'bg-transparent text-white'
     : 'bg-background text-foreground border-b border-[#E8E4DF] shadow-sm';
-
-  const navLinks = [
-    { label: 'Shop', href: '/shop' },
-    { label: 'Rings', href: '/shop?category=rings' },
-    { label: 'Necklaces', href: '/shop?category=necklaces' },
-    { label: 'Earrings', href: '/shop?category=earrings' },
-    { label: 'About', href: '/about' },
-  ];
 
   const mobileLinks = [
     { label: 'Shop All', href: '/shop' },
@@ -86,17 +115,81 @@ export function Navbar() {
             >
               <Menu size={20} strokeWidth={1.5} />
             </button>
+
             <div className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.15em] font-medium">
-              {navLinks.map(link => (
+              {/* Shop with dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={openShop}
+                onMouseLeave={closeShop}
+              >
                 <Link
-                  key={link.href}
-                  href={link.href}
-                  className="relative group hover:opacity-80 transition-opacity"
+                  href="/shop"
+                  className="relative group flex items-center gap-1 hover:opacity-80 transition-opacity py-1"
                 >
-                  {link.label}
+                  Shop
+                  <motion.span
+                    animate={{ rotate: isShopOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronDown size={12} strokeWidth={1.5} />
+                  </motion.span>
                   <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[#C9A96E] group-hover:w-full transition-all duration-300 ease-out" />
                 </Link>
-              ))}
+
+                {/* Dropdown panel */}
+                <AnimatePresence>
+                  {isShopOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      onMouseEnter={openShop}
+                      onMouseLeave={closeShop}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[520px] bg-background text-foreground border border-border shadow-2xl rounded-2xl overflow-hidden z-50"
+                    >
+                      {/* Top: category tiles */}
+                      <div className="grid grid-cols-4">
+                        {shopCategories.map(({ label, href, description, image }) => (
+                          <Link
+                            key={label}
+                            href={href}
+                            className="group flex flex-col overflow-hidden"
+                          >
+                            <div className="aspect-[3/4] overflow-hidden">
+                              <img
+                                src={image}
+                                alt={label}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+                              />
+                            </div>
+                            <div className="p-3 border-t border-border group-hover:bg-secondary transition-colors duration-200">
+                              <p className="text-[11px] uppercase tracking-[0.15em] font-medium mb-0.5">{label}</p>
+                              <p className="text-[10px] text-muted-foreground normal-case tracking-normal leading-snug">{description}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+
+                      {/* Bottom: Shop All */}
+                      <Link
+                        href="/shop"
+                        className="flex items-center justify-between px-5 py-3 border-t border-border hover:bg-secondary transition-colors duration-200 group"
+                      >
+                        <span className="text-[11px] uppercase tracking-[0.15em] font-medium">Shop All Jewelry</span>
+                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* About */}
+              <Link href="/about" className="relative group hover:opacity-80 transition-opacity">
+                About
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[#C9A96E] group-hover:w-full transition-all duration-300 ease-out" />
+              </Link>
             </div>
           </div>
 
@@ -216,7 +309,6 @@ export function Navbar() {
               transition={{ type: 'tween', duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="fixed inset-y-0 left-0 w-full max-w-sm bg-background text-foreground flex flex-col z-50 md:hidden"
             >
-              {/* Header */}
               <div className="flex items-center justify-between px-6 h-16 border-b border-border flex-shrink-0">
                 <span className="font-serif text-xl tracking-widest">LUMIÈRE</span>
                 <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 -mr-2">
@@ -224,7 +316,6 @@ export function Navbar() {
                 </button>
               </div>
 
-              {/* Links */}
               <div className="flex-1 overflow-y-auto px-6 pt-8">
                 {mobileLinks.map((link, i) => (
                   <motion.div
@@ -243,17 +334,10 @@ export function Navbar() {
                 ))}
               </div>
 
-              {/* Bottom social */}
               <div className="px-6 py-6 border-t border-border flex items-center gap-6">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors">
-                  Instagram
-                </a>
-                <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors">
-                  Pinterest
-                </a>
-                <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors">
-                  TikTok
-                </a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors">Instagram</a>
+                <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors">Pinterest</a>
+                <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors">TikTok</a>
               </div>
             </motion.div>
           </>
