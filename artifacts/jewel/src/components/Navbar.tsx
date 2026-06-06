@@ -141,44 +141,36 @@ export function Navbar() {
                 <AnimatePresence>
                   {isShopOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 8 }}
-                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      exit={{ opacity: 0, y: 6 }}
+                      transition={{ duration: 0.18, ease: 'easeOut' }}
                       onMouseEnter={openShop}
                       onMouseLeave={closeShop}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[520px] bg-background text-foreground border border-border shadow-2xl rounded-2xl overflow-hidden z-50"
+                      className="absolute top-full left-0 mt-3 w-52 bg-background text-foreground border border-border shadow-xl rounded-xl overflow-hidden z-50"
                     >
-                      {/* Top: category tiles */}
-                      <div className="grid grid-cols-4">
-                        {shopCategories.map(({ label, href, description, image }) => (
+                      {shopCategories.map(({ label, href }, i) => (
+                        <motion.div
+                          key={label}
+                          initial={{ opacity: 0, x: -6 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.04, duration: 0.18 }}
+                        >
                           <Link
-                            key={label}
                             href={href}
-                            className="group flex flex-col overflow-hidden"
+                            className="flex items-center justify-between px-4 py-3 text-[11px] uppercase tracking-[0.15em] font-medium hover:bg-secondary hover:text-[#C9A96E] transition-colors duration-150 group border-b border-border last:border-0"
                           >
-                            <div className="aspect-[3/4] overflow-hidden">
-                              <img
-                                src={image}
-                                alt={label}
-                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-                              />
-                            </div>
-                            <div className="p-3 border-t border-border group-hover:bg-secondary transition-colors duration-200">
-                              <p className="text-[11px] uppercase tracking-[0.15em] font-medium mb-0.5">{label}</p>
-                              <p className="text-[10px] text-muted-foreground normal-case tracking-normal leading-snug">{description}</p>
-                            </div>
+                            {label}
+                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-150" />
                           </Link>
-                        ))}
-                      </div>
-
-                      {/* Bottom: Shop All */}
+                        </motion.div>
+                      ))}
                       <Link
                         href="/shop"
-                        className="flex items-center justify-between px-5 py-3 border-t border-border hover:bg-secondary transition-colors duration-200 group"
+                        className="flex items-center justify-between px-4 py-3 text-[11px] uppercase tracking-[0.15em] font-medium bg-secondary hover:bg-muted transition-colors duration-150 group text-muted-foreground hover:text-foreground"
                       >
-                        <span className="text-[11px] uppercase tracking-[0.15em] font-medium">Shop All Jewelry</span>
-                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
+                        Shop All
+                        <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform duration-150" />
                       </Link>
                     </motion.div>
                   )}
