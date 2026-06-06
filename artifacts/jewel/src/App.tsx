@@ -14,6 +14,10 @@ import AboutPage from "@/pages/AboutPage";
 import ContactPage from "@/pages/ContactPage";
 import SearchPage from "@/pages/SearchPage";
 import CategoriesPage from "@/pages/CategoriesPage";
+import FAQPage from "@/pages/FAQPage";
+import ShippingPage from "@/pages/ShippingPage";
+import JewelryCarePage from "@/pages/JewelryCarePage";
+import SizeGuidePage from "@/pages/SizeGuidePage";
 import NotFound from "@/pages/not-found";
 
 // Components
@@ -53,6 +57,10 @@ function AnimatedRoutes() {
           <Route path="/contact" component={ContactPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/categories" component={CategoriesPage} />
+          <Route path="/faq" component={FAQPage} />
+          <Route path="/shipping" component={ShippingPage} />
+          <Route path="/care" component={JewelryCarePage} />
+          <Route path="/size-guide" component={SizeGuidePage} />
           <Route component={NotFound} />
         </Switch>
       </motion.div>
