@@ -185,13 +185,15 @@ export default function HomePage() {
             ))}
           </div>
 
-          <Link href="/shop?category=bracelets" className="group relative overflow-hidden block cursor-pointer" style={{ height: '240px' }}>
+          <Link href="/shop?category=bracelets" className="group relative overflow-hidden block cursor-pointer rounded-2xl" style={{ height: '240px' }}>
             <img
               src="https://images.unsplash.com/photo-1573408301185-9519f94652b1?w=1200&q=80"
               alt="Bracelets"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent transition-opacity duration-500 group-hover:from-black/70" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent transition-opacity duration-500 group-hover:from-black/75" />
+            {/* shine sweep */}
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
             <div className="absolute inset-0 flex items-center">
               <div className="pl-12 text-white">
                 <motion.h3
@@ -299,28 +301,27 @@ function CollectionTile({ label, href, image, index }: { label: string; href: st
   const y = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
 
   return (
-    <Link ref={ref} href={href} className="group relative overflow-hidden block cursor-pointer">
+    <Link ref={ref} href={href} className="group relative overflow-hidden block cursor-pointer rounded-2xl">
       <motion.img
         src={image}
         alt={label}
         style={{ y }}
-        className="absolute inset-0 w-full h-[116%] -top-[8%] object-cover"
+        className="absolute inset-0 w-full h-[116%] -top-[8%] object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent transition-opacity duration-500 group-hover:from-black/85" />
-      <motion.div
-        className="absolute bottom-8 left-8 z-10 text-white"
-        initial={{ y: 8, opacity: 0.8 }}
-        whileHover={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      >
+
+      {/* Darkening overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent transition-opacity duration-500 group-hover:from-black/90" />
+
+      {/* Shine sweep on hover */}
+      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
+
+      {/* Bottom label — slides up on hover */}
+      <div className="absolute bottom-0 left-0 right-0 p-8 z-10 text-white translate-y-2 group-hover:translate-y-0 transition-transform duration-400 ease-out">
         <h3 className="font-serif text-3xl mb-3">{label}</h3>
-        <motion.span
-          className="text-[11px] uppercase tracking-[0.15em] flex items-center gap-2"
-          whileHover={{ gap: '12px' }}
-        >
+        <span className="text-[11px] uppercase tracking-[0.15em] flex items-center gap-2 opacity-0 group-hover:opacity-100 group-hover:gap-3 transition-all duration-300 delay-75">
           Shop Now <ArrowRight size={12} />
-        </motion.span>
-      </motion.div>
+        </span>
+      </div>
     </Link>
   );
 }
