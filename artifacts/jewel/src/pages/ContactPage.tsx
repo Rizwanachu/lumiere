@@ -72,21 +72,21 @@ export default function ContactPage() {
                 <div>
                   <h3 className="text-[11px] uppercase tracking-[0.15em] font-medium mb-4">Customer Care</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-2">
-                    Available Monday to Friday, <br/>9:00 AM - 5:00 PM EST
+                    Available Monday to Saturday, <br/>10:00 AM – 7:00 PM IST
                   </p>
-                  <a href="mailto:care@lumierejewels.com" className="text-sm font-medium hover:underline block mb-1">
-                    care@lumierejewels.com
+                  <a href="mailto:care@lumierejewels.in" className="text-sm font-medium hover:underline block mb-1">
+                    care@lumierejewels.in
                   </a>
-                  <a href="tel:+18005550199" className="text-sm font-medium hover:underline block">
-                    +1 (800) 555-0199
+                  <a href="tel:+918001234567" className="text-sm font-medium hover:underline block">
+                    +91 800 123 4567
                   </a>
                 </div>
 
                 <div>
                   <h3 className="text-[11px] uppercase tracking-[0.15em] font-medium mb-4">Flagship Atelier</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    124 Grand Street, Floor 3<br/>
-                    New York, NY 10013<br/>
+                    14 Warden Road, Breach Candy<br/>
+                    Mumbai, Maharashtra 400 026<br/>
                     By appointment only
                   </p>
                   

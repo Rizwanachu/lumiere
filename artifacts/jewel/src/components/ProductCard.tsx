@@ -7,6 +7,7 @@ import { useWishlist } from '@/store/useWishlist';
 import { useCart } from '@/store/useCart';
 import { toast } from 'sonner';
 import { proxyImg } from '@/lib/imgProxy';
+import { formatINR } from '@/lib/currency';
 
 interface ProductCardProps {
   product: Product;
@@ -97,11 +98,11 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         <div className="flex items-center gap-2 text-sm">
           {product.salePrice ? (
             <>
-              <span className="text-muted-foreground line-through">${product.price}</span>
-              <span className="text-primary">${product.salePrice}</span>
+              <span className="text-muted-foreground line-through">{formatINR(product.price)}</span>
+              <span className="text-primary">{formatINR(product.salePrice)}</span>
             </>
           ) : (
-            <span className="text-foreground">${product.price}</span>
+            <span className="text-foreground">{formatINR(product.price)}</span>
           )}
         </div>
       </div>

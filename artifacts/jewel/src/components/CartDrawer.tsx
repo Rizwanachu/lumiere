@@ -4,6 +4,7 @@ import { X, Minus, Plus, Trash2 } from 'lucide-react';
 import { Link } from 'wouter';
 import { useCart } from '@/store/useCart';
 import { proxyImg } from '@/lib/imgProxy';
+import { formatINR, FREE_SHIPPING_THRESHOLD } from '@/lib/currency';
 
 export function CartDrawer() {
   const { items, isOpen, toggleOpen, removeItem, updateQuantity } = useCart();
@@ -13,7 +14,7 @@ export function CartDrawer() {
     return acc + price * item.quantity;
   }, 0);
 
-  const shippingThreshold = 150;
+  const shippingThreshold = FREE_SHIPPING_THRESHOLD;
   const progress = Math.min((subtotal / shippingThreshold) * 100, 100);
   const remaining = Math.max(shippingThreshold - subtotal, 0);
 
@@ -46,7 +47,7 @@ export function CartDrawer() {
             <div className="p-6 bg-secondary/50 border-b border-border">
               <div className="text-sm mb-2 text-center">
                 {remaining > 0 ? (
-                  <>You are <strong>${remaining}</strong> away from free shipping.</>
+                  <>You are <strong>{formatINR(remaining)}</strong> away from free shipping.</>
                 ) : (
                   <>You have unlocked <strong>free shipping!</strong></>
                 )}
@@ -85,7 +86,7 @@ export function CartDrawer() {
                           {item.product.name}
                         </Link>
                         <span className="font-medium text-sm">
-                          ${(item.product.salePrice || item.product.price) * item.quantity}
+                          {formatINR((item.product.salePrice || item.product.price) * item.quantity)}
                         </span>
                       </div>
                       
@@ -128,10 +129,10 @@ export function CartDrawer() {
               <div className="p-6 border-t border-border bg-background">
                 <div className="flex justify-between mb-6 text-sm font-medium">
                   <span>Subtotal</span>
-                  <span>${subtotal}</span>
+                  <span>{formatINR(subtotal)}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-4 text-center">
-                  Shipping & taxes calculated at checkout
+                  Shipping & GST calculated at checkout
                 </p>
                 <Link href="/checkout" onClick={toggleOpen}>
                   <button className="w-full bg-foreground text-background uppercase tracking-[0.12em] text-[11px] py-4 font-medium hover:opacity-90 transition-opacity">

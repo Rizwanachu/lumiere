@@ -187,7 +187,7 @@ export function Navbar() {
                           <p className="text-sm font-medium">{p.name}</p>
                           <p className="text-xs text-muted-foreground capitalize">{p.category}</p>
                         </div>
-                        <span className="text-sm text-muted-foreground">${p.price}</span>
+                        <span className="text-sm text-muted-foreground">₹{p.price.toLocaleString('en-IN')}</span>
                       </Link>
                     ))}
                   </div>

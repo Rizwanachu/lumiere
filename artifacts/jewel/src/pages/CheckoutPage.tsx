@@ -3,16 +3,15 @@ import { Link } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ChevronRight, Lock, Package, Truck, CreditCard } from 'lucide-react';
 import { useCart } from '@/store/useCart';
+import { formatINR, FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_COST, EXPRESS_SHIPPING_COST, GST_RATE } from '@/lib/currency';
 
-const US_STATES = [
-  'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut',
-  'Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa',
-  'Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan',
-  'Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire',
-  'New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio',
-  'Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota',
-  'Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia',
-  'Wisconsin','Wyoming',
+const INDIAN_STATES = [
+  'Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa',
+  'Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala',
+  'Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland',
+  'Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura',
+  'Uttar Pradesh','Uttarakhand','West Bengal',
+  'Delhi (NCT)','Jammu & Kashmir','Ladakh','Puducherry','Chandigarh',
 ];
 
 interface FormData {
@@ -49,8 +48,8 @@ export default function CheckoutPage() {
     setForm(f => ({ ...f, [key]: e.target.value }));
 
   const subtotal = items.reduce((acc, item) => acc + (item.product.salePrice || item.product.price) * item.quantity, 0);
-  const shippingCost = form.shippingMethod === 'express' ? 25 : subtotal >= 150 ? 0 : 15;
-  const tax = subtotal * 0.08;
+  const shippingCost = form.shippingMethod === 'express' ? EXPRESS_SHIPPING_COST : subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_COST;
+  const tax = subtotal * GST_RATE;
   const total = subtotal + shippingCost + tax;
 
   const inputCls = "w-full border border-border bg-transparent px-4 py-3 text-sm outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground rounded-lg";
@@ -224,10 +223,10 @@ export default function CheckoutPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <input type="text" placeholder="City" value={form.city} onChange={set('city')} className={inputCls} required />
                       <select value={form.state} onChange={set('state')} className={inputCls} required>
-                        <option value="" disabled>State</option>
-                        {US_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                        <option value="" disabled>State / UT</option>
+                        {INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
                       </select>
-                      <input type="text" placeholder="ZIP code" value={form.zip} onChange={set('zip')} className={inputCls} required maxLength={10} />
+                      <input type="text" placeholder="PIN code" value={form.zip} onChange={set('zip')} className={inputCls} required maxLength={6} />
                     </div>
                   </div>
 
@@ -281,7 +280,7 @@ export default function CheckoutPage() {
                           <p className="text-xs text-muted-foreground">3–5 business days</p>
                         </div>
                       </div>
-                      <span className="text-sm font-medium">{subtotal >= 150 ? 'Free' : '$15.00'}</span>
+                      <span className="text-sm font-medium">{subtotal >= FREE_SHIPPING_THRESHOLD ? 'Free' : formatINR(STANDARD_SHIPPING_COST)}</span>
                     </label>
                     <label
                       className={`flex items-center justify-between px-5 py-4 cursor-pointer transition-colors ${form.shippingMethod === 'express' ? 'bg-secondary/50' : 'hover:bg-secondary/30'}`}
@@ -296,7 +295,7 @@ export default function CheckoutPage() {
                           <p className="text-xs text-muted-foreground">1–2 business days</p>
                         </div>
                       </div>
-                      <span className="text-sm font-medium">$25.00</span>
+                      <span className="text-sm font-medium">{formatINR(EXPRESS_SHIPPING_COST)}</span>
                     </label>
                   </div>
 
@@ -415,7 +414,7 @@ export default function CheckoutPage() {
                       className="flex-1 py-4 text-[11px] uppercase tracking-[0.15em] font-medium text-white rounded-xl hover:opacity-90 transition-opacity"
                       style={{ background: '#1A1A1A' }}
                     >
-                      Pay ${total.toFixed(2)}
+                      Pay {formatINR(Math.round(total))}
                     </button>
                   </div>
 
@@ -449,7 +448,7 @@ export default function CheckoutPage() {
                     <div className="flex-1 flex flex-col justify-center min-w-0">
                       <div className="flex justify-between items-start gap-2">
                         <p className="font-serif text-sm leading-tight truncate">{item.product.name}</p>
-                        <p className="text-sm font-medium flex-shrink-0">${(item.product.salePrice || item.product.price) * item.quantity}</p>
+                        <p className="text-sm font-medium flex-shrink-0">{formatINR((item.product.salePrice || item.product.price) * item.quantity)}</p>
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
                         {item.metal || item.product.metal}{item.size ? ` / Size ${item.size}` : ''}
@@ -477,37 +476,37 @@ export default function CheckoutPage() {
               <div className="px-6 py-5 space-y-3 text-sm">
                 <div className="flex justify-between text-muted-foreground">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{formatINR(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
                   <span>Shipping</span>
                   <span>
                     {shippingCost === 0
                       ? <span className="text-foreground">Free</span>
-                      : `$${shippingCost.toFixed(2)}`
+                      : formatINR(shippingCost)
                     }
                   </span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
-                  <span>Tax (8%)</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>GST (3%)</span>
+                  <span>{formatINR(Math.round(tax))}</span>
                 </div>
 
                 <div className="border-t border-border pt-4 flex justify-between items-center">
                   <span className="font-medium">Total</span>
                   <div className="text-right">
-                    <span className="text-xs text-muted-foreground mr-1.5">USD</span>
-                    <span className="text-2xl font-serif">${total.toFixed(2)}</span>
+                    <span className="text-xs text-muted-foreground mr-1.5">INR</span>
+                    <span className="text-2xl font-serif">{formatINR(Math.round(total))}</span>
                   </div>
                 </div>
               </div>
 
               {/* Free shipping notice */}
-              {subtotal < 150 && (
+              {subtotal < FREE_SHIPPING_THRESHOLD && (
                 <div className="px-6 pb-5">
                   <div className="bg-secondary rounded-xl p-3 text-xs text-muted-foreground flex items-center gap-2">
                     <Truck size={14} strokeWidth={1.5} className="flex-shrink-0" />
-                    Add ${(150 - subtotal).toFixed(2)} more for free standard shipping
+                    Add {formatINR(FREE_SHIPPING_THRESHOLD - subtotal)} more for free standard shipping
                   </div>
                 </div>
               )}

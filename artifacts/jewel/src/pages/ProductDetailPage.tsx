@@ -8,6 +8,7 @@ import { useWishlist } from '@/store/useWishlist';
 import { useRecentlyViewed } from '@/store/useRecentlyViewed';
 import { toast } from 'sonner';
 import { ProductCard } from '@/components/ProductCard';
+import { formatINR, FREE_SHIPPING_THRESHOLD } from '@/lib/currency';
 
 const SIZE_GUIDE = [
   { size: '5', mm: '15.7', inches: '6 3/16' },
@@ -152,11 +153,11 @@ export default function ProductDetailPage() {
               <div className="flex items-center gap-3 mb-2">
                 {product.salePrice ? (
                   <>
-                    <span className="text-muted-foreground line-through text-lg">${product.price}</span>
-                    <span className="text-xl font-medium" style={{ color: '#C9A96E' }}>${product.salePrice}</span>
+                    <span className="text-muted-foreground line-through text-lg">{formatINR(product.price)}</span>
+                    <span className="text-xl font-medium" style={{ color: '#C9A96E' }}>{formatINR(product.salePrice)}</span>
                   </>
                 ) : (
-                  <span className="text-xl" style={{ color: '#C9A96E' }}>${product.price}</span>
+                  <span className="text-xl" style={{ color: '#C9A96E' }}>{formatINR(product.price)}</span>
                 )}
               </div>
 
@@ -249,7 +250,7 @@ export default function ProductDetailPage() {
                 onMouseEnter={e => { if (product.inStock) (e.currentTarget as HTMLButtonElement).style.background = '#333'; }}
                 onMouseLeave={e => { if (product.inStock) (e.currentTarget as HTMLButtonElement).style.background = '#1A1A1A'; }}
               >
-                {product.inStock ? `Add to Cart — $${displayPrice}` : 'Sold Out'}
+                {product.inStock ? `Add to Cart — ${formatINR(displayPrice)}` : 'Sold Out'}
               </button>
 
               {/* Wishlist */}
@@ -266,7 +267,7 @@ export default function ProductDetailPage() {
               {/* Free Shipping Badge */}
               <div className="flex items-center gap-3 py-4 border-y border-border mb-6">
                 <Truck size={18} strokeWidth={1.5} className="text-muted-foreground flex-shrink-0" />
-                <span className="text-xs text-muted-foreground">Free shipping on orders over $150</span>
+                <span className="text-xs text-muted-foreground">Free shipping on orders over {formatINR(FREE_SHIPPING_THRESHOLD)}</span>
               </div>
 
               {/* Low Stock */}
@@ -282,7 +283,7 @@ export default function ProductDetailPage() {
                 {[
                   { id: 'description', title: 'Product Details', content: product.description },
                   { id: 'materials', title: 'Materials & Care', content: product.materials },
-                  { id: 'shipping', title: 'Shipping & Returns', content: 'Free standard shipping on orders over $150. Express shipping available at checkout. Free returns within 30 days of delivery — no questions asked.' },
+                  { id: 'shipping', title: 'Shipping & Returns', content: 'Free standard shipping on orders over ₹5,000. Express shipping available at checkout. Free returns within 30 days of delivery — no questions asked.' },
                 ].map((item) => (
                   <div key={item.id} className="border-b border-border">
                     <button

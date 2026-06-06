@@ -121,17 +121,17 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-border gap-4">
           <p className="text-xs text-muted-foreground text-center">
-            © {new Date().getFullYear()} Lumière Jewels. All rights reserved.
+            © {new Date().getFullYear()} Lumière Jewels. All rights reserved. · Mumbai, India
           </p>
           <div className="flex items-center gap-3">
             {/* Visa */}
             <svg viewBox="0 0 38 24" className="h-6 w-auto opacity-60"><rect width="38" height="24" rx="4" fill="#1A1F71"/><text x="4" y="17" fontFamily="Arial" fontSize="10" fontWeight="bold" fill="white">VISA</text></svg>
             {/* Mastercard */}
             <svg viewBox="0 0 38 24" className="h-6 w-auto opacity-60"><rect width="38" height="24" rx="4" fill="#252525"/><circle cx="14" cy="12" r="7" fill="#EB001B"/><circle cx="24" cy="12" r="7" fill="#F79E1B"/><path d="M19 6.8a7 7 0 0 1 0 10.4A7 7 0 0 1 19 6.8z" fill="#FF5F00"/></svg>
-            {/* Amex */}
-            <svg viewBox="0 0 38 24" className="h-6 w-auto opacity-60"><rect width="38" height="24" rx="4" fill="#2E77BC"/><text x="3" y="17" fontFamily="Arial" fontSize="8" fontWeight="bold" fill="white">AMEX</text></svg>
-            {/* Apple Pay */}
-            <svg viewBox="0 0 38 24" className="h-6 w-auto opacity-60"><rect width="38" height="24" rx="4" fill="#000"/><text x="4" y="16" fontFamily="Arial" fontSize="8" fill="white">Apple Pay</text></svg>
+            {/* RuPay */}
+            <svg viewBox="0 0 38 24" className="h-6 w-auto opacity-60"><rect width="38" height="24" rx="4" fill="#1A6B3C"/><text x="4" y="16" fontFamily="Arial" fontSize="8" fontWeight="bold" fill="white">RuPay</text></svg>
+            {/* UPI */}
+            <svg viewBox="0 0 38 24" className="h-6 w-auto opacity-60"><rect width="38" height="24" rx="4" fill="#4A154B"/><text x="8" y="16" fontFamily="Arial" fontSize="9" fontWeight="bold" fill="white">UPI</text></svg>
           </div>
         </div>
       </div>
