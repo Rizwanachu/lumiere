@@ -1,3 +1,3 @@
-export function proxyImg(unsplashUrl: string): string {
-  return `/api/img-proxy?url=${encodeURIComponent(unsplashUrl)}`;
+export function proxyImg(url: string): string {
+  return url;
 }
