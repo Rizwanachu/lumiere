@@ -43,6 +43,21 @@ export default defineConfig(async () => {
     build: {
       outDir: path.resolve(import.meta.dirname, "dist/public"),
       emptyOutDir: true,
+      sourcemap: false,
+      rollupOptions: {
+        onwarn(warning, warn) {
+          if (warning.message.includes("Can't resolve original location of error")) return;
+          warn(warning);
+        },
+        output: {
+          manualChunks: {
+            "react-vendor": ["react", "react-dom"],
+            "motion": ["framer-motion"],
+            "router": ["wouter"],
+            "store": ["zustand"],
+          },
+        },
+      },
     },
     server: {
       port,
