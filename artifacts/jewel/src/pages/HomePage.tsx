@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { Marquee } from '@/components/Marquee';
 import { SectionReveal, StaggerReveal } from '@/components/SectionReveal';
 import { ProductCard } from '@/components/ProductCard';
+import { Jewelry3D } from '@/components/Jewelry3D';
 import { products } from '@/data/products';
 
 export default function HomePage() {
@@ -37,46 +38,26 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section with parallax */}
-      <section ref={heroRef} className="relative h-screen min-h-[600px] w-full bg-black overflow-hidden flex items-center justify-center">
-        <motion.div
-          style={{ y: heroY, scale: heroScale }}
-          className="absolute inset-0"
-        >
-          <img
-            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=2000&q=80"
-            alt="Fine jewelry on model"
-            className="w-full h-full object-cover opacity-60"
-          />
-        </motion.div>
+      {/* Hero Section with 3D jewelry */}
+      <section ref={heroRef} className="relative h-screen min-h-[600px] w-full bg-[#0a0a0a] overflow-hidden flex items-center justify-center">
 
-        {/* Floating shimmer particles */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full"
-              style={{
-                width: `${Math.random() * 4 + 2}px`,
-                height: `${Math.random() * 4 + 2}px`,
-                left: `${10 + i * 15}%`,
-                top: `${20 + (i % 3) * 20}%`,
-                background: '#C9A96E',
-                opacity: 0.4,
-              }}
-              animate={{
-                y: [-15, 15, -15],
-                opacity: [0.2, 0.6, 0.2],
-              }}
-              transition={{
-                duration: 3 + i * 0.7,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: i * 0.4,
-              }}
+        {/* 3D Canvas — full background, falls back to photo if no WebGL */}
+        <Jewelry3D
+          className="absolute inset-0 w-full h-full"
+          fallback={
+            <img
+              src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=2000&q=80"
+              alt="Fine jewelry"
+              className="absolute inset-0 w-full h-full object-cover opacity-60"
             />
-          ))}
-        </div>
+          }
+        />
+
+        {/* Subtle radial vignette overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.65)_100%)] pointer-events-none" />
+
+        {/* Bottom fade for smooth transition to marquee */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
 
         <motion.div
           style={{ opacity: heroOpacity }}
