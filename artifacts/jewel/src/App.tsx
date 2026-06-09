@@ -25,7 +25,6 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
 import { ScrollProgress } from "@/components/ScrollProgress";
-import { CursorGlow } from "@/components/CursorGlow";
 
 const queryClient = new QueryClient();
 
@@ -72,7 +71,6 @@ function Router() {
   return (
     <div className="flex flex-col min-h-screen">
       <ScrollProgress />
-      <CursorGlow />
       <Navbar />
       <main className="flex-1">
         <AnimatedRoutes />
